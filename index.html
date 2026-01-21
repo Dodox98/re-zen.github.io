@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RE:ZEN | Roblox Journey</title>
+    <title>RE:ZEN | Roblox Animator</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* --- STYLY (Green Theme) --- */
+        /* --- COLORS (Roblox Green) --- */
         :root {
             --bg: #050505;
             --card-bg: #111111;
@@ -20,6 +20,7 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
             background-color: var(--bg);
             color: white;
@@ -73,32 +74,54 @@
         /* PORTFOLIO GRID */
         .area-title { text-align: left; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 10px; color: var(--accent-green); text-transform: uppercase; }
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
-        .card { background: #0a0a0a; border: 1px solid #222; border-radius: 8px; overflow: hidden; transition: 0.3s; }
+        .card { background: #0a0a0a; border: 1px solid #222; border-radius: 8px; overflow: hidden; transition: 0.3s; cursor: pointer; position: relative; }
         .card:hover { border-color: var(--accent-green); transform: translateY(-3px); }
-        .thumb, .thumb-video { width: 100%; height: 160px; object-fit: cover; display: block; background: #151515; background-size: cover; background-position: center; }
+        
+        /* Zoom icon overlay */
+        .card::after {
+            content: '\f00e'; /* FontAwesome search-plus */
+            font-family: "Font Awesome 6 Free"; font-weight: 900;
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            font-size: 2rem; color: white; opacity: 0; transition: 0.3s; pointer-events: none;
+            text-shadow: 0 0 10px black;
+        }
+        .card:hover::after { opacity: 1; }
+        .card:hover .thumb-video, .card:hover .thumb { filter: brightness(0.5); }
+
+        .thumb, .thumb-video { width: 100%; height: 160px; object-fit: cover; display: block; background: #151515; background-size: cover; background-position: center; transition: 0.3s; }
         .info { padding: 15px; text-align: left; }
         .info h3 { font-size: 1rem; margin-bottom: 5px; }
         .info p { font-size: 0.8rem; color: #888; }
 
-        /* --- NOVÉ STYLY PRO BLOG --- */
+        /* BLOG STYLES */
         #blog-section { margin-top: 60px; }
-        .blog-post {
-            background: var(--card-bg);
-            border: 1px solid #222;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 30px;
-            text-align: left;
-        }
+        .blog-post { background: var(--card-bg); border: 1px solid #222; border-radius: 8px; padding: 20px; margin-bottom: 30px; text-align: left; }
         .blog-date { color: var(--accent-green); font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; margin-bottom: 5px; display: block; }
         .blog-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 15px; color: white; }
         .blog-text { color: #ccc; line-height: 1.6; font-size: 0.95rem; white-space: pre-wrap; margin-bottom: 15px; }
         .blog-media { width: 100%; border-radius: 8px; margin-top: 10px; border: 1px solid #333; max-height: 400px; object-fit: cover; }
 
+        /* --- LIGHTBOX (ZOOM MODAL) --- */
+        .lightbox {
+            display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.9); align-items: center; justify-content: center; backdrop-filter: blur(5px);
+        }
+        .lightbox-content { max-width: 90%; max-height: 90%; border-radius: 8px; box-shadow: 0 0 20px rgba(0, 176, 111, 0.5); border: 2px solid #222; }
+        .lightbox-close {
+            position: absolute; top: 20px; right: 30px; color: #f1f1f1; font-size: 40px; font-weight: bold; cursor: pointer; transition: 0.3s;
+        }
+        .lightbox-close:hover { color: var(--accent-green); }
+
         footer { margin-top: auto; padding: 40px; color: #444; font-size: 0.8rem; }
     </style>
 </head>
 <body>
+
+    <div id="lightbox" class="lightbox">
+        <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+        <div id="lightbox-container" style="display: flex; justify-content: center; width: 100%;">
+            </div>
+    </div>
 
     <div class="main-container">
         <div class="title-area">
@@ -120,7 +143,7 @@
                 </div>
                 <div class="dc-badges">
                     <span class="dc-badge badge-roblox"><i class="fas fa-cube"></i> Roblox Dev</span>
-                    <span class="dc-badge"><i class="fas fa-video"></i> Learning Anim</span>
+                    <span class="dc-badge"><i class="fas fa-video"></i> Animator</span>
                 </div>
             </div>
             <div class="dc-body">
@@ -133,9 +156,7 @@
                         <div class="act-img" style="background: #2f3136; display: flex; align-items: center; justify-content: center;">
                             <i class="fas fa-gamepad" style="color: #555;"></i>
                         </div>
-                        <div class="act-info">
-                            <h4>Loading Discord...</h4>
-                        </div>
+                        <div class="act-info"><h4>Loading Discord...</h4></div>
                     </div>
                 </div>
             </div>
@@ -143,104 +164,102 @@
         </div>
 
         <div class="portfolio-area">
-            <h2 class="area-title">My Learning Progress (Showcase)</h2>
+            <h2 class="area-title">Showcase (Click to Expand)</h2>
             <div class="grid" id="projects-grid"></div>
         </div>
 
         <div id="blog-section">
             <h2 class="area-title">Dev Blog & Updates</h2>
-            <div id="blog-container">
-                </div>
+            <div id="blog-container"></div>
         </div>
 
     </div>
 
-    <footer><p>© 2026 RE:ZEN | All rights reserved </p></footer>
+    <footer><p>© 2026 RE:ZEN | All rights reserved</p></footer>
 
     <script>
         const config = {
             discordID: '868393762555043870',
 
-            // Texty nahoře
+            // Header Texts
             pageTitle: "RE:ZEN",
             role: "< BEGINNER ROBLOX ANIMATOR >",
             
-            // Text v kartě ("About Me")
+            // Bio ("About Me")
             bio: "Hi! I'm new to Roblox animation and development.\nCurrently learning Moon Animator & Blender basics.\nDocumenting my progress here.",
             
             discordLink: "https://discord.com/users/868393762555043870", 
-            bannerColor: "#00b06f", // Zelená barva banneru
+            bannerColor: "#00b06f",
 
-            // 1. SEZNAM PROJEKTŮ (Tvoje videa)
+            // 1. PROJECTS (Clickable Videos)
             projects: [
                 {
-                    title: "My First Walk Cycle Attempt",
+                    title: "First Walk Cycle",
                     desc: "Learning basics of R6 movement.",
                     media: "https://cdn.discordapp.com/attachments/1335237648054358148/1462533466443747408/Walking_E__Blender_Models_Walking.blend_-_Blender_5.0.1_2026-01-18_20-38-16.mp4?ex=69727e6e&is=69712cee&hm=b431d8a39413b25c8542e3849df0a6721dd92be5033ecd12c6c9b44ca83b4f5c&" 
                 },
                 {
-                    title: "Simple crouch collect",
+                    title: "Crouch & Collect",
                     desc: "Trying out easing styles in Blender.",
                     media: "https://cdn.discordapp.com/attachments/1335237648054358148/1463654389771141322/Desktop_2026.01.21_-_22.57.32.01.mp4?ex=69729ddf&is=69714c5f&hm=2e0abfb5806315a5a0e94ce66508f6a173dafa4a3103e664d933e527cd884bae&"
                 },
                 {
-                    title: "Blender Animations",
-                    desc: "Following the famous tutorial to learn some new cool features.",
+                    title: "Jump Animation",
+                    desc: "Following a tutorial to learn new features.",
                     media: "https://cdn.discordapp.com/attachments/1335237648054358148/1463267744647610483/Jump_Collect_E__Blender_Models_Animations_Jump_Collect.blend_-_Blender_5.0.1_2026-01-20_21-22-58.mp4?ex=69728748&is=697135c8&hm=876687e0481ad6501b6f1abc49432c2451ecb4a1e5ae4be06e77a5df977bcfe4&"
                 }
             ],
 
-            // 2. BLOG (Zde můžeš psát články)
-            // Pokud nemáš video, napiš media: null
+            // 2. BLOG (Articles in English)
             blogPosts: [
                 {
-                    date: "22. 1. 2026",
-                    title: "Portfolio spuštěno!",
-                    text: "Právě jsem rozjel své portfolio. Zde budu dávat novinky o tom, jak se učím animovat v Robloxu.",
+                    date: "Jan 22, 2026",
+                    title: "Portfolio Launched!",
+                    text: "I just started my portfolio website. I will be posting updates about my learning journey in Roblox animation here.",
                     media: null
                 }
-                // Zde můžeš přidat další články...
             ]
         };
 
         // =======================================================
-        // ⛔ MOTOR WEBU (NEMĚNIT)
+        // ⛔ SYSTEM CODE (DO NOT EDIT)
         // =======================================================
 
-        // Aplikace Configu
+        // Apply Text Config
         document.getElementById('page-title').innerText = config.pageTitle;
         document.getElementById('page-role').innerText = config.role;
         document.getElementById('dc-bio').innerText = config.bio;
         document.getElementById('dc-btn-link').href = config.discordLink;
-        
         const bannerEl = document.getElementById('dc-banner');
         if(config.bannerImage) { bannerEl.style.backgroundImage = `url('${config.bannerImage}')`; } else { bannerEl.style.backgroundColor = config.bannerColor; }
 
-        // Funkce pro generování médií (Video vs Obrázek)
-        function getMediaHTML(src, className, controls = false) {
-            if (!src) return '';
-            // Kontrola jestli je to video
-            if (src.includes('.mp4') || src.includes('.webm')) {
-                // Pokud je controls=true (pro blog), ukážeme ovládání. Jinak (pro portfolio) autoplay smyčka.
-                if (controls) {
-                    return `<video src="${src}" controls class="${className}"></video>`;
-                } else {
-                    return `<video src="${src}" autoplay loop muted playsinline class="${className}"></video>`;
-                }
+        // --- Lightbox Logic ---
+        function openLightbox(mediaSrc) {
+            const lightbox = document.getElementById('lightbox');
+            const container = document.getElementById('lightbox-container');
+            lightbox.style.display = 'flex';
+            
+            // Check if video or image
+            if(mediaSrc.includes('.mp4') || mediaSrc.includes('.webm')) {
+                container.innerHTML = `<video src="${mediaSrc}" controls autoplay class="lightbox-content"></video>`;
             } else {
-                // Obrázek
-                if (className === 'thumb') {
-                    return `<div class="thumb" style="background-image: url('${src}');"></div>`;
-                } else {
-                    return `<img src="${src}" class="${className}" alt="media">`;
-                }
+                container.innerHTML = `<img src="${mediaSrc}" class="lightbox-content">`;
             }
         }
 
-        // Generování Portfolia
+        function closeLightbox() {
+            document.getElementById('lightbox').style.display = 'none';
+            document.getElementById('lightbox-container').innerHTML = ''; // Stop video playback
+        }
+
+        // Close on click outside
+        document.getElementById('lightbox').addEventListener('click', function(e) {
+            if (e.target === this) closeLightbox();
+        });
+
+        // Generate Portfolio
         const grid = document.getElementById('projects-grid');
         config.projects.forEach(p => {
-            // V portfoliu chceme smyčku bez zvuku (controls = false)
             let mediaElement = "";
             if (p.media.includes('.mp4') || p.media.includes('.webm')) {
                 mediaElement = `<video src="${p.media}" autoplay loop muted playsinline class="thumb-video"></video>`;
@@ -248,8 +267,9 @@
                 mediaElement = `<div class="thumb" style="background-image: url('${p.media}');"></div>`;
             }
 
+            // Added onclick event to open lightbox
             grid.innerHTML += `
-                <div class="card">
+                <div class="card" onclick="openLightbox('${p.media}')">
                     ${mediaElement}
                     <div class="info">
                         <h3>${p.title}</h3>
@@ -259,20 +279,18 @@
             `;
         });
 
-        // Generování Blogu
+        // Generate Blog
         const blogContainer = document.getElementById('blog-container');
         if (config.blogPosts && config.blogPosts.length > 0) {
             config.blogPosts.forEach(post => {
                 let mediaHTML = "";
                 if(post.media) {
-                    // V blogu chceme ovládání videa (controls = true)
                     if (post.media.includes('.mp4') || post.media.includes('.webm')) {
                         mediaHTML = `<video src="${post.media}" controls class="blog-media"></video>`;
                     } else {
                         mediaHTML = `<img src="${post.media}" class="blog-media">`;
                     }
                 }
-
                 blogContainer.innerHTML += `
                     <div class="blog-post">
                         <span class="blog-date">${post.date}</span>
@@ -284,7 +302,7 @@
             });
         }
 
-        // Lanyard Discord API
+        // Lanyard API
         async function loadDiscord() {
             try {
                 const res = await fetch(`https://api.lanyard.rest/v1/users/${config.discordID}`);
@@ -296,8 +314,7 @@
                 av.src = data.discord_user.avatar ? `https://cdn.discordapp.com/avatars/${config.discordID}/${data.discord_user.avatar}.png` : "https://cdn.discordapp.com/embed/avatars/0.png";
                 
                 const colors = { online: '#3ba55c', idle: '#faa61a', dnd: '#ed4245', offline: '#747f8d' };
-                const statColor = colors[data.discord_status] || colors.offline;
-                document.getElementById('dc-status').style.backgroundColor = statColor;
+                document.getElementById('dc-status').style.backgroundColor = colors[data.discord_status] || colors.offline;
 
                 const actBox = document.getElementById('activity-box');
                 const activities = data.activities.filter(a => a.type !== 4);
@@ -314,7 +331,7 @@
                     const custom = data.activities.find(a => a.type === 4);
                     actBox.innerHTML = `<div class="dc-activity"><div class="act-info"><h4>${custom ? "Custom Status" : "Just Chilling"}</h4><p>${custom ? (custom.state || "") : "No game detected"}</p></div></div>`;
                 }
-            } catch(e) { console.log(e); }
+            } catch(e) {}
         }
         loadDiscord(); setInterval(loadDiscord, 10000);
     </script>
