@@ -3,25 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RE:ZEN | Roblox Animator</title>
+    <title>RE:ZEN | Roblox Journey</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* --- NASTAVENÍ BAREV (ROBLOX GREEN THEME) --- */
+        /* --- STYLY (Green Theme) --- */
         :root {
             --bg: #050505;
             --card-bg: #111111;
             --discord-bg: #232428;
             --discord-header: #111214;
-            /* Nová Roblox zelená */
             --accent-green: #00b06f; 
             --text-muted: #b9bbbe;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
         body {
             background-color: var(--bg);
             color: white;
@@ -30,46 +28,28 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            background-image: radial-gradient(circle at 50% 0%, #1a2b20 0%, #000 70%); /* Jemný zelený nádech pozadí */
+            background-image: radial-gradient(circle at 50% 0%, #1a2b20 0%, #000 70%);
         }
 
         .main-container { width: 100%; max-width: 700px; padding: 40px 20px; text-align: center; }
 
-        /* --- HORNÍ TEXT S ANIMACÍ --- */
-        .title-area { margin-bottom: 40px; }
-        
-        /* Definice animace pulzování */
+        /* HEADER ANIMATION */
         @keyframes greenPulse {
             0% { text-shadow: 0 0 5px #fff, 0 0 10px var(--accent-green); }
             50% { text-shadow: 0 0 10px #fff, 0 0 20px var(--accent-green), 0 0 30px var(--accent-green); }
             100% { text-shadow: 0 0 5px #fff, 0 0 10px var(--accent-green); }
         }
-
-        h1 { 
-            font-size: 3rem; 
-            font-weight: 900; 
-            letter-spacing: -2px; 
-            color: white;
-            /* Aplikace animace */
-            animation: greenPulse 3s infinite alternate ease-in-out;
-        }
-        
+        h1 { font-size: 3rem; font-weight: 900; letter-spacing: -2px; color: white; animation: greenPulse 3s infinite alternate ease-in-out; }
         .subtitle { color: var(--accent-green); font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; font-weight: bold; margin-top: 10px; }
 
-        /* --- DISCORD CARD --- */
+        /* DISCORD CARD */
         .discord-card {
             background-color: var(--discord-bg);
             border-radius: 12px;
-            width: 100%;
-            max-width: 450px;
-            margin: 0 auto 50px auto;
-            overflow: hidden;
-            text-align: left;
+            width: 100%; max-width: 450px; margin: 0 auto 50px auto;
+            text-align: left; border: 1px solid #333; overflow: hidden; position: relative;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            border: 1px solid #333;
-            position: relative;
         }
-
         .dc-banner { height: 120px; background-color: var(--discord-header); background-size: cover; background-position: center; }
         .dc-header { padding: 0 20px; position: relative; margin-bottom: 15px; }
         .dc-avatar-wrapper { width: 90px; height: 90px; border-radius: 50%; background: var(--discord-bg); padding: 6px; margin-top: -50px; position: relative; }
@@ -77,40 +57,43 @@
         .dc-status-indicator { width: 20px; height: 20px; border-radius: 50%; background: gray; position: absolute; bottom: 5px; right: 5px; border: 4px solid var(--discord-bg); }
         .dc-info { background-color: #111214; margin: 15px; padding: 15px; border-radius: 8px; }
         .dc-username { font-size: 1.3rem; font-weight: 700; color: white; display: flex; align-items: center; gap: 5px; }
-        
-        .dc-badges { margin-top: 5px; display: flex; gap: 5px; flex-wrap: wrap; }
-        .dc-badge { background: #333; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; color: #eee; font-family: monospace; display: flex; align-items: center; gap: 5px;}
-        /* Zvýraznění Roblox odznaku */
+        .dc-badges { display: flex; gap: 5px; margin-top: 5px; flex-wrap: wrap; }
+        .dc-badge { background: #333; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; color: #eee; font-family: monospace; display: flex; align-items: center; gap: 5px; }
         .badge-roblox { background: rgba(0, 176, 111, 0.2); color: var(--accent-green); border: 1px solid var(--accent-green); }
-
         .dc-body { padding: 0 15px 20px 15px; }
-        .section-header { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; margin-top: 15px; }
+        .section-header { font-size: 0.75rem; font-weight: 700; color: var(--text-muted); margin-bottom: 8px; margin-top: 15px; text-transform: uppercase; }
         .dc-text { font-size: 0.9rem; color: #dcddde; line-height: 1.4; white-space: pre-wrap; }
-
         .dc-activity { background: #18191c; padding: 10px; border-radius: 5px; display: flex; align-items: center; gap: 10px; margin-top: 10px; }
         .act-img { width: 50px; height: 50px; border-radius: 8px; background: #333; object-fit: cover; }
         .act-info h4 { font-size: 0.85rem; font-weight: 700; color: white; }
         .act-info p { font-size: 0.75rem; color: var(--text-muted); }
-
         .dc-btn { display: block; background-color: var(--accent-green); color: white; text-align: center; padding: 10px; border-radius: 4px; text-decoration: none; font-weight: 600; margin: 15px; transition: 0.2s; }
         .dc-btn:hover { background-color: #008a57; }
 
-        /* --- PORTFOLIO GRID (VIDEOS SUPPORTED) --- */
-        .portfolio-area { width: 100%; margin-top: 50px; }
-        .grid-title { text-align: left; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 10px; color: var(--accent-green); text-transform: uppercase;}
+        /* PORTFOLIO GRID */
+        .area-title { text-align: left; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 10px; color: var(--accent-green); text-transform: uppercase; }
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
-
         .card { background: #0a0a0a; border: 1px solid #222; border-radius: 8px; overflow: hidden; transition: 0.3s; }
         .card:hover { border-color: var(--accent-green); transform: translateY(-3px); }
-
-        /* Styl pro obrázky */
-        .thumb { height: 160px; background: #151515; background-size: cover; background-position: center; position: relative; }
-        /* Styl pro videa */
-        .thumb-video { width: 100%; height: 160px; object-fit: cover; display: block; background: #000; }
-        
+        .thumb, .thumb-video { width: 100%; height: 160px; object-fit: cover; display: block; background: #151515; background-size: cover; background-position: center; }
         .info { padding: 15px; text-align: left; }
-        .info h3 { font-size: 1rem; color: white; margin-bottom: 5px; }
+        .info h3 { font-size: 1rem; margin-bottom: 5px; }
         .info p { font-size: 0.8rem; color: #888; }
+
+        /* --- NOVÉ STYLY PRO BLOG --- */
+        #blog-section { margin-top: 60px; }
+        .blog-post {
+            background: var(--card-bg);
+            border: 1px solid #222;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+        .blog-date { color: var(--accent-green); font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; margin-bottom: 5px; display: block; }
+        .blog-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 15px; color: white; }
+        .blog-text { color: #ccc; line-height: 1.6; font-size: 0.95rem; white-space: pre-wrap; margin-bottom: 15px; }
+        .blog-media { width: 100%; border-radius: 8px; margin-top: 10px; border: 1px solid #333; max-height: 400px; object-fit: cover; }
 
         footer { margin-top: auto; padding: 40px; color: #444; font-size: 0.8rem; }
     </style>
@@ -131,7 +114,6 @@
                     <div class="dc-status-indicator" id="dc-status"></div>
                 </div>
             </div>
-
             <div class="dc-info">
                 <div class="dc-username">
                     <span id="dc-username">Loading...</span>
@@ -141,7 +123,6 @@
                     <span class="dc-badge"><i class="fas fa-video"></i> Learning Anim</span>
                 </div>
             </div>
-
             <div class="dc-body">
                 <div class="section-header">ABOUT ME & MY JOURNEY</div>
                 <div class="dc-text" id="dc-bio">...</div>
@@ -162,19 +143,25 @@
         </div>
 
         <div class="portfolio-area">
-            <h2 class="grid-title">My Learning Progress (Videos/GIFs)</h2>
-            <div class="grid" id="projects-grid">
+            <h2 class="area-title">My Learning Progress (Showcase)</h2>
+            <div class="grid" id="projects-grid"></div>
+        </div>
+
+        <div id="blog-section">
+            <h2 class="area-title">Dev Blog & Updates</h2>
+            <div id="blog-container">
                 </div>
         </div>
+
     </div>
 
     <footer><p>© 2026 RE:ZEN | All rights reserved </p></footer>
 
     <script>
         const config = {
-            discordID: '868393762555043870', // Tvoje ID
+            discordID: '868393762555043870',
 
-            // Texty nahoře (upraveno pro začátečníka)
+            // Texty nahoře
             pageTitle: "RE:ZEN",
             role: "< BEGINNER ROBLOX ANIMATOR >",
             
@@ -184,21 +171,16 @@
             discordLink: "https://discord.com/users/868393762555043870", 
             bannerColor: "#00b06f", // Zelená barva banneru
 
-            // SEZNAM PROJEKTŮ - NYNÍ PODPORUJE VIDEA!
-            // DŮLEŽITÉ: Pokud dáváš video, odkaz MUSÍ končit na .mp4 nebo .webm
-            // Pokud dáváš obrázek/gif, může končit na .jpg, .png, .gif
+            // 1. SEZNAM PROJEKTŮ (Tvoje videa)
             projects: [
                 {
                     title: "My First Walk Cycle Attempt",
                     desc: "Learning basics of R6 movement.",
-                    // PŘÍKLAD VIDEA (musí to být přímý odkaz na soubor .mp4)
-                    // Pro test jsem použil ukázkové video, nahraď ho svým!
                     media: "https://cdn.discordapp.com/attachments/1335237648054358148/1462533466443747408/Walking_E__Blender_Models_Walking.blend_-_Blender_5.0.1_2026-01-18_20-38-16.mp4?ex=69727e6e&is=69712cee&hm=b431d8a39413b25c8542e3849df0a6721dd92be5033ecd12c6c9b44ca83b4f5c&" 
                 },
                 {
                     title: "Simple crouch collect",
                     desc: "Trying out easing styles in Blender.",
-                    // PŘÍKLAD OBRÁZKU/GIFU
                     media: "https://cdn.discordapp.com/attachments/1335237648054358148/1463654389771141322/Desktop_2026.01.21_-_22.57.32.01.mp4?ex=69729ddf&is=69714c5f&hm=2e0abfb5806315a5a0e94ce66508f6a173dafa4a3103e664d933e527cd884bae&"
                 },
                 {
@@ -206,6 +188,18 @@
                     desc: "Following the famous tutorial to learn some new cool features.",
                     media: "https://cdn.discordapp.com/attachments/1335237648054358148/1463267744647610483/Jump_Collect_E__Blender_Models_Animations_Jump_Collect.blend_-_Blender_5.0.1_2026-01-20_21-22-58.mp4?ex=69728748&is=697135c8&hm=876687e0481ad6501b6f1abc49432c2451ecb4a1e5ae4be06e77a5df977bcfe4&"
                 }
+            ],
+
+            // 2. BLOG (Zde můžeš psát články)
+            // Pokud nemáš video, napiš media: null
+            blogPosts: [
+                {
+                    date: "22. 1. 2026",
+                    title: "Portfolio spuštěno!",
+                    text: "Právě jsem rozjel své portfolio. Zde budu dávat novinky o tom, jak se učím animovat v Robloxu.",
+                    media: null
+                }
+                // Zde můžeš přidat další články...
             ]
         };
 
@@ -213,6 +207,7 @@
         // ⛔ MOTOR WEBU (NEMĚNIT)
         // =======================================================
 
+        // Aplikace Configu
         document.getElementById('page-title').innerText = config.pageTitle;
         document.getElementById('page-role').innerText = config.role;
         document.getElementById('dc-bio').innerText = config.bio;
@@ -221,16 +216,35 @@
         const bannerEl = document.getElementById('dc-banner');
         if(config.bannerImage) { bannerEl.style.backgroundImage = `url('${config.bannerImage}')`; } else { bannerEl.style.backgroundColor = config.bannerColor; }
 
-        // CHYTRÉ GENEROVÁNÍ PROJEKTŮ (Video vs Obrázek)
+        // Funkce pro generování médií (Video vs Obrázek)
+        function getMediaHTML(src, className, controls = false) {
+            if (!src) return '';
+            // Kontrola jestli je to video
+            if (src.includes('.mp4') || src.includes('.webm')) {
+                // Pokud je controls=true (pro blog), ukážeme ovládání. Jinak (pro portfolio) autoplay smyčka.
+                if (controls) {
+                    return `<video src="${src}" controls class="${className}"></video>`;
+                } else {
+                    return `<video src="${src}" autoplay loop muted playsinline class="${className}"></video>`;
+                }
+            } else {
+                // Obrázek
+                if (className === 'thumb') {
+                    return `<div class="thumb" style="background-image: url('${src}');"></div>`;
+                } else {
+                    return `<img src="${src}" class="${className}" alt="media">`;
+                }
+            }
+        }
+
+        // Generování Portfolia
         const grid = document.getElementById('projects-grid');
         config.projects.forEach(p => {
-            let mediaElement = '';
-            // Jednoduchá kontrola, jestli odkaz končí na koncovku videa
-            if (p.media.endsWith('.mp4') || p.media.endsWith('.webm')) {
-                // Je to video -> vytvoříme <video> tag
+            // V portfoliu chceme smyčku bez zvuku (controls = false)
+            let mediaElement = "";
+            if (p.media.includes('.mp4') || p.media.includes('.webm')) {
                 mediaElement = `<video src="${p.media}" autoplay loop muted playsinline class="thumb-video"></video>`;
             } else {
-                // Je to obrázek nebo GIF -> vytvoříme <div> s pozadím
                 mediaElement = `<div class="thumb" style="background-image: url('${p.media}');"></div>`;
             }
 
@@ -244,6 +258,31 @@
                 </div>
             `;
         });
+
+        // Generování Blogu
+        const blogContainer = document.getElementById('blog-container');
+        if (config.blogPosts && config.blogPosts.length > 0) {
+            config.blogPosts.forEach(post => {
+                let mediaHTML = "";
+                if(post.media) {
+                    // V blogu chceme ovládání videa (controls = true)
+                    if (post.media.includes('.mp4') || post.media.includes('.webm')) {
+                        mediaHTML = `<video src="${post.media}" controls class="blog-media"></video>`;
+                    } else {
+                        mediaHTML = `<img src="${post.media}" class="blog-media">`;
+                    }
+                }
+
+                blogContainer.innerHTML += `
+                    <div class="blog-post">
+                        <span class="blog-date">${post.date}</span>
+                        <div class="blog-title">${post.title}</div>
+                        <div class="blog-text">${post.text}</div>
+                        ${mediaHTML}
+                    </div>
+                `;
+            });
+        }
 
         // Lanyard Discord API
         async function loadDiscord() {
