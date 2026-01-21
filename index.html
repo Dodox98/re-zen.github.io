@@ -1,1 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio | Motion Designer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg: #050505;
+            --text: #ffffff;
+            --accent: #ff3c00; /* Red/Orange accent color */
+            --card-bg: #111;
+        }
 
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+        }
+
+        /* --- NAVIGATION --- */
+        nav {
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            background: rgba(5, 5, 5, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            border-bottom: 1px solid #222;
+        }
+
+        .logo { font-weight: 900; font-size: 1.5rem; letter-spacing: -1px; }
+        .logo span { color: var(--accent); }
+
+        .menu a {
+            color: #888;
+            text-decoration: none;
+            margin-left: 30px;
+            transition: 0.3s;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .menu a:hover { color: var(--accent); }
+
+        /* --- HERO SECTION --- */
+        header {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 0 10%;
+            background: radial-gradient(circle at 80% 20%, #1a0b0b 0%, var(--bg) 60%);
+        }
+
+        .hero-content { max-width: 650px; }
+        
+        h1 {
+            font-size: 4rem;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            font-weight: 900;
+        }
+        
+        .role { color: var(--accent); font-family: monospace; font-size: 1.1rem; }
+
+        .btn {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 15px 30px;
+            background: var(--accent);
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: transform 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .btn:hover { transform: translateY(-3px); }
+
+        /* --- SHOWREEL --- */
+        section { padding: 100px 10%; }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 50px;
+            border-left: 5px solid var(--accent);
+            padding-left: 20px;
+            text-transform: uppercase;
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            background: #000;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #333;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+        }
+
+        /* --- PORTFOLIO GRID --- */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .project-card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: 0.3s;
+            border: 1px solid #222;
+        }
+        .project-card:hover { transform: translateY(-10px); border-color: var(--accent); }
+
+        .thumb {
+            height: 200px;
+            background: #222;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #555;
+            position: relative;
+        }
+        
+        .project-info { padding: 25px; }
+        .project-info h3 { margin-bottom: 10px; font-size: 1.2rem; }
+        .project-info p { color: #888; font-size: 0.9rem; }
+
+        /* --- BLOG --- */
+        .blog-post {
+            margin-bottom: 40px;
+            padding-bottom: 40px;
+            border-bottom: 1px solid #222;
+        }
+        .date { font-family: monospace; color: var(--accent); font-size: 0.8rem; }
+        .blog-post h3 { font-size: 1.5rem; margin: 10px 0; }
+        .blog-post p { color: #ccc; }
+        .read-more { color: #fff; text-decoration: none; font-weight: bold; font-size: 0.9rem; margin-top: 10px; display: inline-block; }
+        .read-more:hover { color: var(--accent); }
+
+        /* --- FOOTER --- */
+        footer {
+            padding: 60px 10%;
+            background: #000;
+            border-top: 1px solid #222;
+            text-align: center;
+            color: #555;
+        }
+        .socials { margin-bottom: 25px; font-size: 1.5rem; }
+        .socials a { color: white; margin: 0 15px; transition: 0.3s; }
+        .socials a:hover { color: var(--accent); }
+
+        /* MOBILE */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            nav { padding: 20px; }
+            .menu { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">YOUR<span>NAME</span></div>
+        <div class="menu">
+            <a href="#home">Home</a>
+            <a href="#showreel">Showreel</a>
+            <a href="#portfolio">Work</a>
+            <a href="#blog">Blog</a>
+        </div>
+    </nav>
+
+    <header id="home">
+        <div class="hero-content">
+            <span class="role">&lt;ANIMATOR / VISUAL ARTIST&gt;</span>
+            <h1>Bringing Static Worlds to Life.</h1>
+            <p style="color: #aaa; margin-bottom: 30px; font-size: 1.1rem;">
+                I specialize in 2D/3D animation, motion design, and visual effects.
+                Welcome to my digital workspace.
+            </p>
+            <a href="#contact" class="btn">Get in touch</a>
+        </div>
+    </header>
+
+    <section id="showreel">
+        <h2 class="section-title">Showreel 2025</h2>
+        <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?controls=0" frameborder="0" allowfullscreen></iframe>
+        </div>
+    </section>
+
+    <section id="portfolio">
+        <h2 class="section-title">Selected Works</h2>
+        <div class="grid">
+            
+            <div class="project-card">
+                <div class="thumb" style="background-image: url('https://placehold.co/600x400/111/FFF?text=Project+1'); background-size: cover;"></div>
+                <div class="project-info">
+                    <h3>Neon City Loop</h3>
+                    <p>Blender 3D, After Effects. Cyberpunk aesthetics study.</p>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="thumb" style="background-image: url('https://placehold.co/600x400/111/FFF?text=Project+2'); background-size: cover;"></div>
+                <div class="project-info">
+                    <h3>Character Walk Cycle</h3>
+                    <p>Frame-by-frame animation created in TVPaint.</p>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <div class="thumb" style="background-image: url('https://placehold.co/600x400/111/FFF?text=Project+3'); background-size: cover;"></div>
+                <div class="project-info">
+                    <h3>Client Logo Reveal</h3>
+                    <p>Commercial motion design project.</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="blog">
+        <h2 class="section-title">Personal Blog</h2>
+        
+        <article class="blog-post">
+            <span class="date">JANUARY 22, 2025</span>
+            <h3>How I started with 3D Animation?</h3>
+            <p>This is my first post. I wanted to share my journey from traditional drawing to learning Blender and Maya...</p>
+            <a href="#" class="read-more">Read more -></a>
+        </article>
+
+        <article class="blog-post">
+            <span class="date">DECEMBER 15, 2024</span>
+            <h3>Scene Breakdown: The Explosion</h3>
+            <p>Creating a realistic explosion in 2D is tricky. Here are my notes on timing, spacing, and framerates...</p>
+            <a href="#" class="read-more">Read more -></a>
+        </article>
+    </section>
+
+    <footer id="contact">
+        <div class="socials">
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-linkedin"></i></a>
+            <a href="mailto:email@email.com"><i class="fas fa-envelope"></i></a>
+        </div>
+        <p>&copy; 2025 Your Name. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
