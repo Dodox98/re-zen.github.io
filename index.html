@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="cs">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Medusa Webhook Dashboard</title>
     <style>
-        /* --- 1. PROMĚNNÉ A ZÁKLAD (Discord Dark Theme) --- */
+        /* --- 1. VARIABLES & BASE (Discord Dark Theme) --- */
         :root {
-            --bg-primary: #313338; /* Hlavní tmavá */
-            --bg-secondary: #2b2d31; /* Karty */
-            --bg-tertiary: #1e1f22; /* Inputy a lišty */
+            --bg-primary: #313338; /* Main Dark */
+            --bg-secondary: #2b2d31; /* Cards */
+            --bg-tertiary: #1e1f22; /* Inputs/Bars */
             --accent-green: #23a559; /* Discord Green */
-            --lightning-color: rgba(35, 165, 89, 0.6); /* Barva blesků */
+            --lightning-color: rgba(35, 165, 89, 0.6); /* Lightning Color */
             --text-main: #f2f3f5;
             --text-dim: #b5bac1;
             --font-stack: 'gg sans', 'Segoe UI', Tahoma, sans-serif;
@@ -26,7 +26,7 @@
             overflow-x: hidden;
         }
 
-        /* --- 2. EFEKT ZELENÝCH BLESKŮ (Sticky Header) --- */
+        /* --- 2. GREEN LIGHTNING EFFECT (Sticky Header) --- */
         .lightning-overlay {
             position: fixed;
             top: 0;
@@ -47,14 +47,14 @@
             100% { opacity: 0.4; filter: blur(30px); }
         }
 
-        /* --- 3. NAVIGACE S LOGEM (YouTube Style) --- */
+        /* --- 3. NAVIGATION (YouTube Style) --- */
         nav {
             position: sticky;
             top: 0;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: rgba(30, 31, 34, 0.9); /* Průhlednost, aby šly vidět blesky */
+            background: rgba(30, 31, 34, 0.9); /* Translucent */
             backdrop-filter: blur(10px);
             padding: 15px 30px;
             border-bottom: 2px solid var(--accent-green);
@@ -85,7 +85,7 @@
 
         .nav-menu {
             display: flex;
-            gap: 50px; /* Větší mezery mezi textem */
+            gap: 50px;
         }
 
         .nav-menu a {
@@ -100,7 +100,7 @@
             text-shadow: 0 0 10px var(--accent-green);
         }
 
-        /* --- 4. HLAVNÍ OBSAH --- */
+        /* --- 4. MAIN CONTENT --- */
         main {
             max-width: 1000px;
             margin: 0 auto;
@@ -109,7 +109,7 @@
             z-index: 60;
         }
 
-        /* --- 5. DISCORD STATUS (Webhook verze) --- */
+        /* --- 5. DISCORD STATUS --- */
         .status-card {
             background: var(--bg-secondary);
             border-radius: 12px;
@@ -128,7 +128,7 @@
             width: 100px;
             height: 100px;
             border-radius: 50%;
-            background-image: url('image_5778ed.png'); /* TVOJE LOGO */
+            background-image: url('image_5778ed.png'); /* YOUR LOGO HERE */
             background-size: cover;
             border: 4px solid var(--bg-secondary);
         }
@@ -147,7 +147,7 @@
         .activity-line { color: var(--text-dim); font-size: 1rem; }
         .activity-bold { color: var(--text-main); font-weight: bold; }
 
-        /* --- 6. SLIDERY --- */
+        /* --- 6. SLIDERS --- */
         .section-heading {
             border-left: 5px solid var(--accent-green);
             padding-left: 15px;
@@ -204,7 +204,7 @@
         .slider-control:hover { background: var(--accent-green); }
         .prev { left: 15px; } .next { right: 15px; }
 
-        /* --- 7. TIMELINE (PRAGUE TIMEZONE) --- */
+        /* --- 7. TIMELINE --- */
         .timeline-container {
             margin-bottom: 60px;
             border-left: 3px solid #444;
@@ -237,7 +237,7 @@
             display: inline-block;
         }
 
-        /* --- 8. TLAČÍTKO & MODAL --- */
+        /* --- 8. BUTTON & MODAL --- */
         .btn-main {
             display: block; margin: 0 auto;
             padding: 15px 50px;
@@ -267,7 +267,7 @@
             width: 90%; max-width: 500px;
             position: relative;
             border: 1px solid var(--accent-green);
-            /* Animace otevření */
+            /* Opening Animation */
             opacity: 0; transform: scale(0.8);
             animation: modalOpen 0.3s forwards;
         }
@@ -288,7 +288,7 @@
         }
         input:focus, textarea:focus { outline: 2px solid var(--accent-green); border-color: transparent; }
 
-        /* Animace Fajfky (Úspěch) */
+        /* Success Animation (Checkmark) */
         .success-view {
             display: none;
             flex-direction: column; align-items: center; justify-content: center;
@@ -333,7 +333,7 @@
             <div class="user-info">
                 <h1>Medusa Webhook #0001</h1>
                 <div class="activity-line">
-                    Hraje hru <span class="activity-bold">Visual Studio Code</span>
+                    Playing <span class="activity-bold">Visual Studio Code</span>
                 </div>
             </div>
         </div>
@@ -342,22 +342,22 @@
         <div class="slider-box" id="slider1">
             <button class="slider-control prev" onclick="moveSlide('slider1', -1)">&#10094;</button>
             <div class="slider-track">
-                <div class="slide"><img src="https://via.placeholder.com/1000x400/1e1f22/23a559?text=Embed+Styl+1" alt="1"></div>
-                <div class="slide"><img src="https://via.placeholder.com/1000x400/1e1f22/23a559?text=Embed+Styl+2" alt="2"></div>
+                <div class="slide"><img src="https://via.placeholder.com/1000x400/1e1f22/23a559?text=Embed+Style+1" alt="1"></div>
+                <div class="slide"><img src="https://via.placeholder.com/1000x400/1e1f22/23a559?text=Embed+Style+2" alt="2"></div>
                 <div class="slide"><img src="https://via.placeholder.com/1000x400/1e1f22/23a559?text=Webhook+Settings" alt="3"></div>
             </div>
             <button class="slider-control next" onclick="moveSlide('slider1', 1)">&#10095;</button>
         </div>
 
-        <h2 class="section-heading">Návody & Setup</h2>
+        <h2 class="section-heading">Tutorials & Setup</h2>
         <div class="slider-box" id="slider2">
             <button class="slider-control prev" onclick="moveSlide('slider2', -1)">&#10094;</button>
             <div class="slider-track">
                 <div class="slide">
-                    <div style="color:white; font-size:1.2rem;">[VIDEO: Jak nastavit Webhook URL]</div>
+                    <div style="color:white; font-size:1.2rem;">[VIDEO: How to setup Webhook URL]</div>
                 </div>
                 <div class="slide">
-                    <div style="color:white; font-size:1.2rem;">[VIDEO: Formátování JSON Embedu]</div>
+                    <div style="color:white; font-size:1.2rem;">[VIDEO: JSON Embed Formatting]</div>
                 </div>
             </div>
             <button class="slider-control next" onclick="moveSlide('slider2', 1)">&#10095;</button>
@@ -369,17 +369,17 @@
                 <div class="timeline-dot"></div>
                 <div class="time-tag">22.01.2025 17:00 (Europe/Prague)</div>
                 <h3>Advanced Embed Update</h3>
-                <p style="color:var(--text-dim)">Přidána podpora pro tlačítka a interaktivní prvky ve webhooku.</p>
+                <p style="color:var(--text-dim)">Added support for buttons and interactive elements in webhooks.</p>
             </div>
             <div class="timeline-event">
                 <div class="timeline-dot"></div>
                 <div class="time-tag">20.01.2025 10:00 (Europe/Prague)</div>
                 <h3>Visual Overhaul</h3>
-                <p style="color:var(--text-dim)">Nové UI dashboardu se zelenými efekty a slidery.</p>
+                <p style="color:var(--text-dim)">New dashboard UI with green lightning effects and sliders.</p>
             </div>
         </div>
 
-        <button class="btn-main" onclick="openModal()">Nahlásit Chybu</button>
+        <button class="btn-main" onclick="openModal()">Report a Bug</button>
     </main>
 
     <div class="modal-overlay" id="contactModal">
@@ -388,21 +388,21 @@
             
             <form id="contactForm" onsubmit="submitForm(event)">
                 <h2 style="color:white; margin-bottom:20px;">Webhook Support</h2>
-                <input type="text" placeholder="Discord Tag (např. User#1234)" required>
-                <input type="email" placeholder="Email" required>
-                <textarea rows="5" placeholder="Popis problému s webhookem..." required></textarea>
-                <button type="submit" class="btn-main" style="width:100%">Odeslat</button>
+                <input type="text" placeholder="Discord Tag (e.g. User#1234)" required>
+                <input type="email" placeholder="Your Email" required>
+                <textarea rows="5" placeholder="Describe the issue..." required></textarea>
+                <button type="submit" class="btn-main" style="width:100%">Send</button>
             </form>
 
             <div class="success-view" id="successMsg">
                 <div class="check-circle">✔</div>
-                <h2 style="color:white">Odesláno!</h2>
+                <h2 style="color:white">Sent!</h2>
             </div>
         </div>
     </div>
 
     <script>
-        // --- JS LOGIKA SLIDERŮ ---
+        // --- SLIDER LOGIC ---
         const sliders = {
             'slider1': { idx: 0, el: document.querySelector('#slider1 .slider-track') },
             'slider2': { idx: 0, el: document.querySelector('#slider2 .slider-track') }
@@ -412,13 +412,13 @@
             const s = sliders[id];
             const max = s.el.children.length;
             s.idx += dir;
-            // Cyklování slideru
+            // Loop functionality
             if (s.idx < 0) s.idx = max - 1;
             if (s.idx >= max) s.idx = 0;
             s.el.style.transform = `translateX(-${s.idx * 100}%)`;
         }
 
-        // --- JS LOGIKA MODALU, ZVUKU A ANIMACE ---
+        // --- MODAL, SOUND & ANIMATION LOGIC ---
         const modal = document.getElementById('contactModal');
         const form = document.getElementById('contactForm');
         const success = document.getElementById('successMsg');
@@ -436,14 +436,14 @@
 
         function submitForm(e) {
             e.preventDefault();
-            form.style.display = 'none'; // Skrýt form
-            success.style.display = 'flex'; // Ukázat fajfku
+            form.style.display = 'none'; // Hide form
+            success.style.display = 'flex'; // Show checkmark
             
-            // Přehrání zvuku
+            // Play sound
             audio.volume = 0.5;
             audio.play().catch(err => console.log('Audio blocked by browser:', err));
 
-            setTimeout(closeModal, 2500); // Zavřít po 2.5s
+            setTimeout(closeModal, 2500); // Close after 2.5s
         }
     </script>
 </body>
