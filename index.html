@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RE:ZEN | Roblox Animator </title>
+    <title>RE:ZEN | Roblox Animator Portfolio</title>
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
     
     <style>
@@ -331,7 +331,7 @@
                 
                 <div class="slide">
                     <img src="https://via.placeholder.com/1000x400/080808/00ff9d?text=To+Be+Added..." alt="Placeholder">
-                    <div class="slide-caption">Footage To Be Added...</div>
+                    <div class="slide-caption">To Be Added...</div>
                 </div>
 
                 <div class="slide">
@@ -351,7 +351,7 @@
             <div class="info-card">
                 <span class="time-badge">22.01.2026 18:30</span>
                 <h4 style="color:#fff; font-size:1.2rem; margin-bottom:10px;">Interaction Systems Polish</h4>
-                <p style="color:#888;">Started to trying to make advanced animations after few days of improving my knowledge about Blender.</p>
+                <p style="color:#888;">Finalized the R6 interaction suite (Pickup, Jump, Equip). Prioritized perfect synchronization with backend logic and game-feel.</p>
             </div>
             
             <div class="info-card">
@@ -380,12 +380,12 @@
                 <input type="text" id="senderName" class="input-field" placeholder="Your Name / Discord Handle" required>
                 <textarea id="message" class="input-field" rows="4" placeholder="Project Brief / Description..." required></textarea>
                 
-                <button class="btn-neon" style="width:100%; border-radius:8px;">SEND COLLABORATION REQUEST</button>
+                <button class="btn-neon" style="width:100%; border-radius:8px;">SEND INQUIRY</button>
             </form>
 
             <div class="success-anim" id="successView">
                 <div class="checkmark-circle">✔</div>
-                <h3 style="color:#fff;">COLLABORATION REQUEST</h3>
+                <h3 style="color:#fff;">INQUIRY SENT</h3>
                 <p style="color:var(--accent-primary); margin-top:10px;">I'll respond via Discord shortly.</p>
             </div>
         </div>
@@ -399,14 +399,14 @@
             // 1. WEBHOOK CONFIGURATION
             const webhookUrl = "https://discord.com/api/webhooks/1463690525092741333/Wac3lIXI5yYdtSo6w8QgXbWnahVisKr6xIUTh3p7DXLRZxSC2Vin8ZTgXOEDVG6M96eM";
             
-            // 2. !!! TVOJE DISCORD ID ZDE !!! (Aby tě to označilo)
-            // Příklad: const myDiscordID = "123456789012345678";
+            // 2. TVOJE DISCORD ID
             const myDiscordID = "868393762555043870"; 
 
             const name = document.getElementById('senderName').value;
             const msg = document.getElementById('message').value;
 
             // Logika pro PING
+            // Použije tvé ID pro označení v Discordu
             let contentText = "||@everyone|| **Nová zpráva z portfolia!** 🚀";
             if(myDiscordID) {
                 contentText = `||<@${myDiscordID}>|| **Nová zpráva z portfolia!** 🚀`;
@@ -440,6 +440,7 @@
                             value: `\`\`\`yaml\n${msg}\n\`\`\`` 
                         }
                     ],
+                    // Footer odstraněn
                     timestamp: new Date()
                 }]
             };
