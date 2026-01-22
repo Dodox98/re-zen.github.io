@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* --- NASTAVENÍ BAREV --- */
+        /* --- BAREVNÉ SCHÉMA --- */
         :root {
             --bg: #050505;
             --card-bg: #111111;
@@ -35,7 +35,7 @@
 
         .main-container { width: 100%; max-width: 700px; padding: 40px 20px; text-align: center; transition: 0.3s; }
 
-        /* --- MENU TLAČÍTKO --- */
+        /* --- MENU --- */
         .menu-btn {
             position: fixed; top: 20px; right: 20px; z-index: 2000;
             width: 50px; height: 50px; background: rgba(0,0,0,0.6);
@@ -79,29 +79,61 @@
         h1 { font-size: 3rem; font-weight: 900; letter-spacing: -2px; color: white; animation: greenPulse 3s infinite alternate ease-in-out; }
         .subtitle { color: var(--accent-green); font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; font-weight: bold; margin-top: 10px; }
 
-        /* --- DISCORD CARD --- */
+        /* --- DISCORD CARD (Fixed Layout) --- */
         .discord-card {
-            background-color: var(--discord-bg); border-radius: 12px; width: 100%; max-width: 450px; margin: 0 auto 50px auto;
+            background-color: var(--discord-bg); border-radius: 12px; width: 100%; max-width: 480px; margin: 0 auto 50px auto;
             text-align: left; border: 1px solid #333; overflow: hidden; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
         .dc-banner { height: 120px; background-color: #111; background-size: cover; background-position: center; }
-        .dc-header { padding: 0 20px; position: relative; margin-bottom: 15px; }
-        .dc-avatar-wrapper { width: 90px; height: 90px; border-radius: 50%; background: var(--discord-bg); padding: 6px; margin-top: -50px; position: relative; }
+        
+        .dc-header { 
+            padding: 0 20px; position: relative; margin-bottom: 10px; 
+            display: flex; justify-content: space-between; align-items: flex-end;
+            margin-top: -50px; /* Posun obsahu nahoru do banneru */
+        }
+        
+        .dc-avatar-wrapper { 
+            width: 90px; height: 90px; border-radius: 50%; 
+            background: var(--discord-bg); padding: 6px; 
+            position: relative; z-index: 2;
+        }
         .dc-avatar { width: 100%; height: 100%; border-radius: 50%; background-size: cover; }
         .dc-status-indicator { width: 20px; height: 20px; border-radius: 50%; background: gray; position: absolute; bottom: 5px; right: 5px; border: 4px solid var(--discord-bg); }
-        .dc-info { background-color: #111214; margin: 15px; padding: 15px; border-radius: 8px; }
-        .dc-username { font-size: 1.3rem; font-weight: 700; color: white; display: flex; align-items: center; gap: 5px; }
-        
-        .dc-badges { display: flex; gap: 5px; margin-top: 5px; flex-wrap: wrap; }
-        .dc-badge { background: #333; padding: 4px 6px; border-radius: 4px; font-size: 0.8rem; color: #eee; display: flex; align-items: center; justify-content: center; }
-        .badge-roblox { background: rgba(0, 176, 111, 0.2); color: var(--accent-green); border: 1px solid var(--accent-green); padding: 2px 8px; font-size: 0.75rem; font-family: monospace;}
+
+        /* DISCORD BADGES CONTAINER (Vedle avatara / vpravo) */
+        .dc-profile-badges {
+            background: rgba(0,0,0,0.6);
+            border-radius: 8px;
+            padding: 5px;
+            display: flex; gap: 5px;
+            backdrop-filter: blur(5px);
+            margin-bottom: 10px; /* Aby nebyly nalepené dole */
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .badge-icon { font-size: 1.1rem; padding: 2px 5px; }
         .badge-nitro { color: #f47fff; }
         .badge-hype { color: #f1c40f; } 
         .badge-boost { color: #ff73fa; }
+        
+        /* INFO SEKCE */
+        .dc-info { background-color: #111214; margin: 15px; padding: 15px; border-radius: 8px; }
+        
+        .dc-username { font-size: 1.4rem; font-weight: 700; color: white; display: block; }
+        .dc-timezone { font-size: 0.8rem; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; display: flex; align-items: center; gap: 6px; margin: 5px 0 10px 0;}
+        .dc-timezone i { font-size: 0.7rem; }
+
+        /* ROLE (Roblox Dev, Animator) - ZPĚT DOLE */
+        .dc-roles { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 10px; }
+        .dc-role { 
+            background: #2f3136; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; 
+            color: #ccc; display: flex; align-items: center; gap: 5px; font-weight: 600;
+        }
+        .role-roblox { background: rgba(0, 176, 111, 0.15); color: var(--accent-green); border: 1px solid rgba(0, 176, 111, 0.5); }
 
         .dc-body { padding: 0 15px 20px 15px; }
         .section-header { font-size: 0.75rem; font-weight: 700; color: var(--text-muted); margin-bottom: 8px; margin-top: 15px; text-transform: uppercase; }
         .dc-text { font-size: 0.9rem; color: #dcddde; line-height: 1.4; white-space: pre-wrap; }
+        
         .dc-activity { background: #18191c; padding: 10px; border-radius: 5px; display: flex; align-items: center; gap: 10px; margin-top: 10px; }
         .act-img { width: 50px; height: 50px; border-radius: 8px; background: #333; object-fit: cover; }
         .act-info h4 { font-size: 0.85rem; font-weight: 700; color: white; }
@@ -129,12 +161,11 @@
         .blog-text { color: #ccc; line-height: 1.6; font-size: 0.95rem; white-space: pre-wrap; margin-bottom: 15px; }
         .blog-media { width: 100%; border-radius: 8px; margin-top: 10px; border: 1px solid #333; max-height: 400px; object-fit: cover; }
 
-        /* --- LIGHTBOX & FORM MODAL --- */
+        /* --- LIGHTBOX & FORM --- */
         .lightbox { display: none; position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9); align-items: center; justify-content: center; backdrop-filter: blur(5px); }
         .lightbox-content { max-width: 90%; max-height: 90%; border-radius: 8px; box-shadow: 0 0 20px rgba(0, 176, 111, 0.5); border: 2px solid #222; }
         .lightbox-close { position: absolute; top: 20px; right: 30px; color: #f1f1f1; font-size: 40px; font-weight: bold; cursor: pointer; }
 
-        /* FORMULÁŘ */
         .form-container { background: #111; padding: 30px; border-radius: 10px; width: 100%; max-width: 400px; border: 1px solid #333; box-shadow: 0 0 20px rgba(0, 176, 111, 0.3); text-align: left; }
         .form-group { margin-bottom: 15px; }
         .form-label { display: block; margin-bottom: 5px; font-size: 0.8rem; color: #aaa; }
@@ -148,27 +179,19 @@
 </head>
 <body>
 
-    <div class="menu-btn" onclick="toggleMenu()">
-        <i class="fas fa-bars"></i>
-    </div>
+    <div class="menu-btn" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
 
     <div class="sidebar" id="sidebar">
         <div class="sb-section">
             <h3>COLLABORATION</h3>
             <p class="sb-text">Do you have an idea? Let's work together!</p>
-            <div class="contact-btn btn-collab" onclick="openForm()">
-                <i class="fas fa-handshake"></i> Request Collab
-            </div>
+            <div class="contact-btn btn-collab" onclick="openForm()"><i class="fas fa-handshake"></i> Request Collab</div>
         </div>
-
         <div class="sb-section">
             <h3>SUPPORT</h3>
             <p class="sb-text">Do you like my work? Support is appreciated!</p>
-            <a href="#" target="_blank" class="contact-btn btn-paypal" id="link-paypal">
-                <i class="fab fa-paypal"></i> Donate via PayPal
-            </a>
+            <a href="#" target="_blank" class="contact-btn btn-paypal" id="link-paypal"><i class="fab fa-paypal"></i> Donate via PayPal</a>
         </div>
-
         <div class="sb-section">
             <h3>ABOUT ME</h3>
             <p class="sb-text" id="sb-about-text">Loading...</p>
@@ -184,26 +207,9 @@
         <span class="lightbox-close" onclick="closeForm()">&times;</span>
         <div class="form-container">
             <h2 style="color:white; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 10px;">Collaboration Request</h2>
-            
-            <div class="form-group">
-                <label class="form-label">Your Discord Name</label>
-                <input type="text" id="fname" class="form-input" placeholder="User#1234">
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">Project Type</label>
-                <select id="ftype" class="form-input">
-                    <option>Roblox Animation</option>
-                    <option>Game Development</option>
-                    <option>Other</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">Message / Idea</label>
-                <textarea id="fmsg" class="form-input" rows="4" placeholder="Describe your idea..."></textarea>
-            </div>
-
+            <div class="form-group"><label class="form-label">Your Discord Name</label><input type="text" id="fname" class="form-input" placeholder="User#1234"></div>
+            <div class="form-group"><label class="form-label">Project Type</label><select id="ftype" class="form-input"><option>Roblox Animation</option><option>Game Development</option><option>Other</option></select></div>
+            <div class="form-group"><label class="form-label">Message / Idea</label><textarea id="fmsg" class="form-input" rows="4" placeholder="Describe your idea..."></textarea></div>
             <button class="form-btn" onclick="sendToDiscord()">SEND REQUEST</button>
             <p id="form-status" style="margin-top:10px; font-size:0.8rem; color:#aaa;"></p>
         </div>
@@ -222,17 +228,27 @@
                     <img src="" class="dc-avatar" id="dc-avatar">
                     <div class="dc-status-indicator" id="dc-status"></div>
                 </div>
-            </div>
-            <div class="dc-info">
-                <div class="dc-username"><span id="dc-username">Loading...</span></div>
                 
-                <div class="dc-badges">
-                    <span class="dc-badge badge-roblox"><i class="fas fa-cube"></i> Roblox Dev</span>
-                    <span class="dc-badge badge-nitro" title="Nitro"><i class="fas fa-bolt"></i></span>
-                    <span class="dc-badge badge-boost" title="Server Booster"><i class="fas fa-gem"></i></span>
-                    <span class="dc-badge badge-hype" title="HypeSquad"><i class="fas fa-shield-alt"></i></span>
+                <div class="dc-profile-badges">
+                    <span class="badge-icon badge-nitro" title="Nitro"><i class="fas fa-bolt"></i></span>
+                    <span class="badge-icon badge-boost" title="Server Booster"><i class="fas fa-gem"></i></span>
+                    <span class="badge-icon badge-hype" title="HypeSquad"><i class="fas fa-shield-alt"></i></span>
                 </div>
             </div>
+            
+            <div class="dc-info">
+                <span class="dc-username" id="dc-username">Loading...</span>
+                
+                <div class="dc-timezone" id="local-time">
+                    <i class="far fa-clock"></i> Loading time...
+                </div>
+
+                <div class="dc-roles">
+                    <span class="dc-role role-roblox"><i class="fas fa-cube"></i> Roblox Dev</span>
+                    <span class="dc-role"><i class="fas fa-video"></i> Animator</span>
+                </div>
+            </div>
+
             <div class="dc-body">
                 <div class="section-header">ABOUT ME</div>
                 <div class="dc-text" id="dc-bio">...</div>
@@ -263,27 +279,18 @@
     <script>
         const config = {
             discordID: '868393762555043870',
-
-            // --- WEBHOOK URL (Už nastaveno) ---
             webhookUrl: "https://discord.com/api/webhooks/1463690525092741333/Wac3lIXI5yYdtSo6w8QgXbWnahVisKr6xIUTh3p7DXLRZxSC2Vin8ZTgXOEDVG6M96eM", 
 
-            // --- PAGE TEXTS ---
             pageTitle: "RE:ZEN",
             role: "< BEGINNER ROBLOX ANIMATOR >",
-            
-            // Bio on Card
             bio: "Hi! I'm new to Roblox animation.\nLearning Moon Animator & Blender.\nDocumenting my progress.",
 
-            // --- LINKS ---
             discordLink: "https://discord.com/users/868393762555043870", 
             paypalLink: "https://paypal.me/rachty", 
-            
-            // Sidebar Bio
             aboutSidebar: "I am a passionate beginner animator focusing on Roblox R6/R15 rigs. My goal is to master combat animations and smooth easing styles.",
 
             bannerColor: "#00b06f",
 
-            // 1. VIDEOS
             videos: [
                 {
                     title: "First Walk Cycle",
@@ -301,8 +308,6 @@
                     media: "https://cdn.discordapp.com/attachments/1335237648054358148/1463267744647610483/Jump_Collect_E__Blender_Models_Animations_Jump_Collect.blend_-_Blender_5.0.1_2026-01-20_21-22-58.mp4?ex=69728748&is=697135c8&hm=876687e0481ad6501b6f1abc49432c2451ecb4a1e5ae4be06e77a5df977bcfe4&"
                 }
             ],
-
-            // 2. IMAGES
             images: [
                 {
                     title: "Render Test",
@@ -313,10 +318,13 @@
                     title: "Character Model",
                     desc: "My main avatar rig.",
                     media: "https://placehold.co/600x400/222/FFF?text=Rig+Showcase"
+                },
+                {
+                    title: "More Coming Soon",
+                    desc: "I am currently working on new renders.",
+                    media: "https://placehold.co/600x400/0a0a0a/00b06f?text=TO+BE+ADDED..."
                 }
             ],
-
-            // 3. BLOG
             blogPosts: [
                 {
                     date: "Jan 22, 2026",
@@ -327,24 +335,24 @@
             ]
         };
 
-        // =======================================================
-        // ⛔ SYSTEM LOGIC
-        // =======================================================
-
-        // Apply Config
+        // --- SYSTEM LOGIC ---
         document.getElementById('page-title').innerText = config.pageTitle;
         document.getElementById('page-role').innerText = config.role;
         document.getElementById('dc-bio').innerText = config.bio;
         document.getElementById('dc-btn-link').href = config.discordLink;
-        
-        // Sidebar Content
         document.getElementById('link-paypal').href = config.paypalLink;
         document.getElementById('sb-about-text').innerText = config.aboutSidebar;
 
         const bannerEl = document.getElementById('dc-banner');
         if(config.bannerImage) { bannerEl.style.backgroundImage = `url('${config.bannerImage}')`; } else { bannerEl.style.backgroundColor = config.bannerColor; }
 
-        // --- MENU LOGIC ---
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('en-GB', { timeZone: 'Europe/Prague', hour: '2-digit', minute: '2-digit' });
+            document.getElementById('local-time').innerHTML = `<i class="far fa-clock"></i> ${timeString} (Local Time)`;
+        }
+        setInterval(updateTime, 1000); updateTime();
+
         function toggleMenu() {
             const sb = document.getElementById('sidebar');
             const icon = document.querySelector('.menu-btn i');
@@ -358,101 +366,50 @@
             if (!sb.contains(event.target) && !btn.contains(event.target) && sb.classList.contains('active')) { toggleMenu(); }
         });
 
-        // --- COLLAB FORM LOGIC ---
         function openForm() { document.getElementById('form-modal').style.display = 'flex'; toggleMenu(); }
         function closeForm() { document.getElementById('form-modal').style.display = 'none'; }
-
         function sendToDiscord() {
             const name = document.getElementById('fname').value;
             const type = document.getElementById('ftype').value;
             const msg = document.getElementById('fmsg').value;
             const status = document.getElementById('form-status');
-
             if(!name || !msg) { status.innerText = "Please fill in all fields."; status.style.color = "#ff5555"; return; }
             status.innerText = "Sending...";
             
             const requestData = {
                 content: `<@${config.discordID}> **New Collab Request!**`, 
                 embeds: [{
-                    title: "📬 New Request from Website",
-                    color: 5763717, 
-                    fields: [
-                        { name: "From", value: name, inline: true },
-                        { name: "Type", value: type, inline: true },
-                        { name: "Message", value: msg }
-                    ],
-                    footer: { text: "RE:ZEN Portfolio" },
-                    timestamp: new Date()
+                    title: "📬 New Request from Website", color: 5763717, 
+                    fields: [{ name: "From", value: name, inline: true }, { name: "Type", value: type, inline: true }, { name: "Message", value: msg }],
+                    footer: { text: "RE:ZEN Portfolio" }, timestamp: new Date()
                 }]
             };
-
-            if(!config.webhookUrl || config.webhookUrl.includes("ZDE_VLOZ")) {
-                status.innerText = "Error: Webhook URL not configured."; return;
-            }
-
-            fetch(config.webhookUrl, {
-                method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(requestData)
-            }).then(response => {
-                if(response.ok) {
-                    status.innerText = "Sent successfully! I will check it soon.";
-                    status.style.color = "#00b06f";
-                    setTimeout(closeForm, 2000);
-                } else {
-                    status.innerText = "Error sending message."; status.style.color = "#ff5555";
-                }
-            }).catch(error => {
-                status.innerText = "Error: " + error; status.style.color = "#ff5555";
-            });
+            if(!config.webhookUrl) { status.innerText = "Error: Webhook URL not configured."; return; }
+            fetch(config.webhookUrl, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(requestData) })
+            .then(res => { if(res.ok) { status.innerText = "Sent successfully!"; status.style.color = "#00b06f"; setTimeout(closeForm, 2000); } else { status.innerText = "Error sending."; } })
+            .catch(err => { status.innerText = "Error: " + err; });
         }
 
-        // --- RENDER CONTENT ---
         const vidGrid = document.getElementById('video-grid');
         config.videos.forEach(p => {
-            vidGrid.innerHTML += `
-                <div class="card" onclick="openLightbox('${p.media}')">
-                    <video src="${p.media}" autoplay loop muted playsinline class="thumb-video"></video>
-                    <div class="info"><h3>${p.title}</h3><p>${p.desc}</p></div>
-                </div>`;
+            vidGrid.innerHTML += `<div class="card" onclick="openLightbox('${p.media}')"><video src="${p.media}" autoplay loop muted playsinline class="thumb-video"></video><div class="info"><h3>${p.title}</h3><p>${p.desc}</p></div></div>`;
         });
-
         const imgGrid = document.getElementById('image-grid');
         config.images.forEach(p => {
-            imgGrid.innerHTML += `
-                <div class="card" onclick="openLightbox('${p.media}')">
-                    <div class="thumb" style="background-image: url('${p.media}');"></div>
-                    <div class="info"><h3>${p.title}</h3><p>${p.desc}</p></div>
-                </div>`;
+            imgGrid.innerHTML += `<div class="card" onclick="openLightbox('${p.media}')"><div class="thumb" style="background-image: url('${p.media}');"></div><div class="info"><h3>${p.title}</h3><p>${p.desc}</p></div></div>`;
         });
-
         const blogContainer = document.getElementById('blog-container');
         if (config.blogPosts) {
             config.blogPosts.forEach(post => {
-                let mediaHTML = "";
-                if(post.media) {
-                    if (post.media.includes('.mp4')) mediaHTML = `<video src="${post.media}" controls class="blog-media"></video>`;
-                    else mediaHTML = `<img src="${post.media}" class="blog-media">`;
-                }
-                blogContainer.innerHTML += `
-                    <div class="blog-post">
-                        <span class="blog-date">${post.date}</span>
-                        <div class="blog-title">${post.title}</div>
-                        <div class="blog-text">${post.text}</div>
-                        ${mediaHTML}
-                    </div>`;
+                let mediaHTML = post.media ? (post.media.includes('.mp4') ? `<video src="${post.media}" controls class="blog-media"></video>` : `<img src="${post.media}" class="blog-media">`) : "";
+                blogContainer.innerHTML += `<div class="blog-post"><span class="blog-date">${post.date}</span><div class="blog-title">${post.title}</div><div class="blog-text">${post.text}</div>${mediaHTML}</div>`;
             });
         }
-
         function openLightbox(src) {
-            const lb = document.getElementById('lightbox');
-            const con = document.getElementById('lightbox-container');
-            lb.style.display = 'flex';
-            if(src.includes('.mp4')) con.innerHTML = `<video src="${src}" controls autoplay class="lightbox-content"></video>`;
-            else con.innerHTML = `<img src="${src}" class="lightbox-content">`;
+            const lb = document.getElementById('lightbox'); const con = document.getElementById('lightbox-container'); lb.style.display = 'flex';
+            if(src.includes('.mp4')) con.innerHTML = `<video src="${src}" controls autoplay class="lightbox-content"></video>`; else con.innerHTML = `<img src="${src}" class="lightbox-content">`;
         }
-        function closeLightbox() {
-            document.getElementById('lightbox').style.display = 'none';
-            document.getElementById('lightbox-container').innerHTML = '';
-        }
+        function closeLightbox() { document.getElementById('lightbox').style.display = 'none'; document.getElementById('lightbox-container').innerHTML = ''; }
         document.getElementById('lightbox').addEventListener('click', function(e) { if(e.target === this) closeLightbox(); });
 
         async function loadDiscord() {
@@ -469,10 +426,8 @@
                 const acts = data.activities.filter(a => a.type !== 4);
                 if(acts.length > 0) {
                     const a = acts[0];
-                    let icon = "";
-                    if(a.assets && a.assets.large_image) {
-                        icon = a.assets.large_image.startsWith("mp:") ? `https://media.discordapp.net/${a.assets.large_image.replace("mp:", "")}` : `https://cdn.discordapp.com/app-assets/${a.application_id}/${a.assets.large_image}.png`;
-                    } else if(a.id==="spotify:1") icon = a.assets.large_image ? `https://i.scdn.co/image/${a.assets.large_image.replace("spotify:", "")}` : "";
+                    let icon = a.assets && a.assets.large_image ? (a.assets.large_image.startsWith("mp:") ? `https://media.discordapp.net/${a.assets.large_image.replace("mp:", "")}` : `https://cdn.discordapp.com/app-assets/${a.application_id}/${a.assets.large_image}.png`) : "";
+                    if(a.id==="spotify:1") icon = a.assets.large_image ? `https://i.scdn.co/image/${a.assets.large_image.replace("spotify:", "")}` : "";
                     actBox.innerHTML = `<div class="dc-activity"><img src="${icon}" class="act-img" onerror="this.style.display='none'"><div class="act-info"><h4>${a.name}</h4><p>${a.details || a.state || "Playing..."}</p></div></div>`;
                 } else actBox.innerHTML = `<div class="dc-activity"><div class="act-info"><h4>Just Chilling</h4><p>No game detected</p></div></div>`;
             } catch(e){}
