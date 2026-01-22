@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* --- COLORS --- */
+        /* --- NASTAVENÍ BAREV A VZHLEDU --- */
         :root {
             --bg: #050505;
             --card-bg: #111111;
@@ -30,57 +30,66 @@
             flex-direction: column;
             align-items: center;
             background-image: radial-gradient(circle at 50% 0%, #1a2b20 0%, #000 70%);
-            overflow-x: hidden; /* Prevent horizontal scroll */
+            overflow-x: hidden;
         }
 
-        .main-container { width: 100%; max-width: 700px; padding: 40px 20px; text-align: center; transition: 0.3s; }
+        /* --- HLAVNÍ KONTEJNER --- */
+        .main-container { 
+            width: 100%; 
+            max-width: 700px; 
+            padding: 40px 20px; 
+            text-align: center; 
+            transition: 0.3s; 
+        }
 
-        /* --- TOP RIGHT MENU ICON --- */
+        /* --- MENU TLAČÍTKO (Vpravo nahoře) --- */
         .menu-btn {
             position: fixed;
-            top: 25px;
-            right: 30px;
+            top: 20px;
+            right: 20px;
             z-index: 2000;
-            font-size: 1.5rem;
-            cursor: pointer;
-            background: rgba(0,0,0,0.5);
-            width: 45px; height: 45px;
-            display: flex; align-items: center; justify-content: center;
-            border-radius: 50%;
+            width: 50px; height: 50px;
+            background: rgba(0,0,0,0.6);
             border: 1px solid #333;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            font-size: 1.5rem;
             transition: 0.3s;
+            color: white;
         }
         .menu-btn:hover { background: var(--accent-green); border-color: var(--accent-green); }
 
-        /* --- SIDEBAR (DRAWER) --- */
+        /* --- BOČNÍ PANEL (SIDEBAR) --- */
         .sidebar {
             position: fixed; top: 0; right: 0;
-            width: 320px; height: 100%;
+            width: 300px; height: 100%;
             background: var(--sidebar-bg);
             border-left: 1px solid #222;
             z-index: 1999;
-            transform: translateX(100%); /* Hidden by default */
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            padding: 80px 30px 30px 30px; /* Padding top for close btn */
-            box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+            transform: translateX(100%); /* Schované */
+            transition: transform 0.4s ease;
+            padding: 90px 30px 30px 30px;
+            box-shadow: -10px 0 30px rgba(0,0,0,0.8);
             display: flex; flex-direction: column; gap: 30px;
+            text-align: left;
         }
-        .sidebar.active { transform: translateX(0); }
+        .sidebar.active { transform: translateX(0); } /* Zobrazené */
         
         .sb-section h3 { color: var(--accent-green); font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; margin-bottom: 15px; border-bottom: 1px solid #222; padding-bottom: 5px; }
-        .sb-text { color: #ccc; font-size: 0.9rem; line-height: 1.6; margin-bottom: 10px; }
+        .sb-text { color: #ccc; font-size: 0.9rem; line-height: 1.6; }
         
         .contact-btn {
             display: flex; align-items: center; gap: 10px;
             background: #1a1a1a; padding: 12px; border-radius: 6px;
             color: white; text-decoration: none; margin-bottom: 10px;
-            border: 1px solid #333; transition: 0.2s;
+            border: 1px solid #333; transition: 0.2s; font-size: 0.9rem; font-weight: 600;
         }
         .contact-btn:hover { border-color: var(--accent-green); background: #222; }
         .btn-paypal { background: #003087; border-color: #003087; }
         .btn-paypal:hover { background: #0045c2; }
 
-        /* --- HEADER --- */
+        /* --- NADPIS S ANIMACÍ --- */
         @keyframes greenPulse {
             0% { text-shadow: 0 0 5px #fff, 0 0 10px var(--accent-green); }
             100% { text-shadow: 0 0 5px #fff, 0 0 15px var(--accent-green); }
@@ -89,7 +98,7 @@
         h1 { font-size: 3rem; font-weight: 900; letter-spacing: -2px; color: white; animation: greenPulse 3s infinite alternate ease-in-out; }
         .subtitle { color: var(--accent-green); font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; font-weight: bold; margin-top: 10px; }
 
-        /* --- DISCORD CARD --- */
+        /* --- DISCORD KARTA --- */
         .discord-card {
             background-color: var(--discord-bg);
             border-radius: 12px; width: 100%; max-width: 450px; margin: 0 auto 50px auto;
@@ -115,16 +124,21 @@
         .act-info p { font-size: 0.75rem; color: var(--text-muted); }
         .dc-btn { display: block; background-color: var(--accent-green); color: white; text-align: center; padding: 10px; border-radius: 4px; text-decoration: none; font-weight: 600; margin: 15px; transition: 0.2s; }
 
-        /* --- PORTFOLIO GRIDS --- */
-        .area-title { text-align: left; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 10px; color: var(--accent-green); text-transform: uppercase; margin-top: 40px; }
+        /* --- GRIDY (Videa a Obrázky) --- */
+        .area-title { text-align: left; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 10px; color: var(--accent-green); text-transform: uppercase; margin-top: 40px; font-weight: 800; }
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
         
         .card { background: #0a0a0a; border: 1px solid #222; border-radius: 8px; overflow: hidden; transition: 0.3s; cursor: pointer; position: relative; }
         .card:hover { border-color: var(--accent-green); transform: translateY(-3px); }
-        /* Zoom Icon */
-        .card::after { content: '\f00e'; font-family: "Font Awesome 6 Free"; font-weight: 900; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 2rem; color: white; opacity: 0; transition: 0.3s; pointer-events: none; text-shadow: 0 0 10px black; }
+        
+        /* Ikona lupy při najetí */
+        .card::after { 
+            content: '\f00e'; font-family: "Font Awesome 6 Free"; font-weight: 900; 
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+            font-size: 2rem; color: white; opacity: 0; transition: 0.3s; pointer-events: none; text-shadow: 0 0 10px black; 
+        }
         .card:hover::after { opacity: 1; }
-        .card:hover .thumb-video, .card:hover .thumb { filter: brightness(0.5); }
+        .card:hover .thumb-video, .card:hover .thumb { filter: brightness(0.4); }
 
         .thumb, .thumb-video { width: 100%; height: 160px; object-fit: cover; display: block; background: #151515; background-size: cover; background-position: center; transition: 0.3s; }
         .info { padding: 15px; text-align: left; }
@@ -139,7 +153,7 @@
         .blog-text { color: #ccc; line-height: 1.6; font-size: 0.95rem; white-space: pre-wrap; margin-bottom: 15px; }
         .blog-media { width: 100%; border-radius: 8px; margin-top: 10px; border: 1px solid #333; max-height: 400px; object-fit: cover; }
 
-        /* --- LIGHTBOX --- */
+        /* --- LIGHTBOX (Zvětšovací okno) --- */
         .lightbox { display: none; position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9); align-items: center; justify-content: center; backdrop-filter: blur(5px); }
         .lightbox-content { max-width: 90%; max-height: 90%; border-radius: 8px; box-shadow: 0 0 20px rgba(0, 176, 111, 0.5); border: 2px solid #222; }
         .lightbox-close { position: absolute; top: 20px; right: 30px; color: #f1f1f1; font-size: 40px; font-weight: bold; cursor: pointer; }
@@ -156,7 +170,7 @@
     <div class="sidebar" id="sidebar">
         <div class="sb-section">
             <h3>SUPPORT</h3>
-            <p class="sb-text">If you like my animations, support is appreciated!</p>
+            <p class="sb-text">Do you like my work? Support is appreciated!</p>
             <a href="#" target="_blank" class="contact-btn btn-paypal" id="link-paypal">
                 <i class="fab fa-paypal"></i> Donate via PayPal
             </a>
@@ -164,7 +178,7 @@
 
         <div class="sb-section">
             <h3>CONTACTS</h3>
-            <a href="#" class="contact-btn" id="link-discord">
+            <a href="#" class="contact-btn" id="link-discord-sb">
                 <i class="fab fa-discord"></i> Discord Server
             </a>
             <a href="#" class="contact-btn" id="link-email">
@@ -183,7 +197,7 @@
         <div id="lightbox-container" style="display: flex; justify-content: center; width: 100%;"></div>
     </div>
 
-    <div class="main-container" id="main-content">
+    <div class="main-container">
         <div class="title-area">
             <h1 id="page-title">RE:ZEN</h1>
             <p class="subtitle" id="page-role">BEGINNER ROBLOX ANIMATOR</p>
@@ -201,7 +215,7 @@
                 <div class="dc-username"><span id="dc-username">Loading...</span></div>
                 <div class="dc-badges">
                     <span class="dc-badge badge-roblox"><i class="fas fa-cube"></i> Roblox Dev</span>
-                    <span class="dc-badge"><i class="fas fa-video"></i> Animator</span>
+                    <span class="dc-badge">Animator</span>
                 </div>
             </div>
             <div class="dc-body">
@@ -235,24 +249,24 @@
         const config = {
             discordID: '868393762555043870',
 
-            // --- PAGE TEXTS ---
+            // --- TEXTY NA WEBU ---
             pageTitle: "RE:ZEN",
             role: "< BEGINNER ROBLOX ANIMATOR >",
             
-            // --- MAIN BIO (Discord Card) ---
+            // Text "About Me" na kartě
             bio: "Hi! I'm new to Roblox animation.\nLearning Moon Animator & Blender.\nDocumenting my progress.",
 
-            // --- LINKS & CONTACTS (Sidebar) ---
+            // --- ODKAZY V MENU (SIDEBAR) ---
             discordLink: "https://discord.com/users/868393762555043870", 
-            paypalLink: "https://paypal.me/tvujprofil", // ZMĚŇ NA TVŮJ PAYPAL!
-            emailLink: "mailto:contact@rezen.com",     // ZMĚŇ NA TVŮJ EMAIL!
+            paypalLink: "https://paypal.me/Dodox98", // ZMĚNĚNO NA Dodox98 (podle tvého GitHubu)
+            emailLink: "mailto:tvuj@email.com",      // ZMĚŇ ZA SVŮJ EMAIL!
             
-            // --- SIDEBAR "ABOUT ME" (Longer text) ---
+            // Text "About Me" v bočním menu
             aboutSidebar: "I am a passionate beginner animator focusing on Roblox R6/R15 rigs. My goal is to master combat animations and smooth easing styles.",
 
             bannerColor: "#00b06f",
 
-            // 1. VIDEOS (Only .mp4 / .webm)
+            // 1. VIDEA (Zde dávej jen MP4 soubory)
             videos: [
                 {
                     title: "First Walk Cycle",
@@ -271,7 +285,7 @@
                 }
             ],
 
-            // 2. IMAGES (Only .png / .jpg / .gif)
+            // 2. OBRÁZKY (Zde dávej jen PNG/JPG)
             images: [
                 {
                     title: "Render Test",
@@ -297,24 +311,132 @@
         };
 
         // =======================================================
-        // ⛔ SYSTEM LOGIC
+        // ⛔ SYSTÉMOVÝ KÓD (NEMĚNIT, ABY SE TO NEROZBILO)
         // =======================================================
 
-        // Apply Config
+        // Aplikace textů a odkazů
         document.getElementById('page-title').innerText = config.pageTitle;
         document.getElementById('page-role').innerText = config.role;
         document.getElementById('dc-bio').innerText = config.bio;
         document.getElementById('dc-btn-link').href = config.discordLink;
         
-        // Sidebar Content
+        // Nastavení Sidebaru
         document.getElementById('link-paypal').href = config.paypalLink;
         document.getElementById('link-email').href = config.emailLink;
-        document.getElementById('link-discord').href = config.discordLink;
+        document.getElementById('link-discord-sb').href = config.discordLink;
         document.getElementById('sb-about-text').innerText = config.aboutSidebar;
 
+        // Banner
         const bannerEl = document.getElementById('dc-banner');
         if(config.bannerImage) { bannerEl.style.backgroundImage = `url('${config.bannerImage}')`; } else { bannerEl.style.backgroundColor = config.bannerColor; }
 
-        // --- MENU LOGIC ---
+        // --- FUNKCE MENU ---
         function toggleMenu() {
             const sb = document.getElementById('sidebar');
+            const icon = document.querySelector('.menu-btn i');
+            sb.classList.toggle('active');
+            
+            if(sb.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times'); // Změna na křížek
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        }
+
+        // Zavření menu kliknutím vedle
+        document.addEventListener('click', function(event) {
+            const sb = document.getElementById('sidebar');
+            const btn = document.querySelector('.menu-btn');
+            // Pokud kliknu mimo menu A mimo tlačítko
+            if (!sb.contains(event.target) && !btn.contains(event.target) && sb.classList.contains('active')) {
+                toggleMenu();
+            }
+        });
+
+        // --- GENEROVÁNÍ OBSAHU ---
+        
+        // 1. VIDEA
+        const vidGrid = document.getElementById('video-grid');
+        config.videos.forEach(p => {
+            vidGrid.innerHTML += `
+                <div class="card" onclick="openLightbox('${p.media}')">
+                    <video src="${p.media}" autoplay loop muted playsinline class="thumb-video"></video>
+                    <div class="info"><h3>${p.title}</h3><p>${p.desc}</p></div>
+                </div>`;
+        });
+
+        // 2. OBRÁZKY
+        const imgGrid = document.getElementById('image-grid');
+        config.images.forEach(p => {
+            imgGrid.innerHTML += `
+                <div class="card" onclick="openLightbox('${p.media}')">
+                    <div class="thumb" style="background-image: url('${p.media}');"></div>
+                    <div class="info"><h3>${p.title}</h3><p>${p.desc}</p></div>
+                </div>`;
+        });
+
+        // 3. BLOG
+        const blogContainer = document.getElementById('blog-container');
+        if (config.blogPosts) {
+            config.blogPosts.forEach(post => {
+                let mediaHTML = "";
+                if(post.media) {
+                    if (post.media.includes('.mp4')) mediaHTML = `<video src="${post.media}" controls class="blog-media"></video>`;
+                    else mediaHTML = `<img src="${post.media}" class="blog-media">`;
+                }
+                blogContainer.innerHTML += `
+                    <div class="blog-post">
+                        <span class="blog-date">${post.date}</span>
+                        <div class="blog-title">${post.title}</div>
+                        <div class="blog-text">${post.text}</div>
+                        ${mediaHTML}
+                    </div>`;
+            });
+        }
+
+        // --- LIGHTBOX (ZVĚTŠOVÁNÍ) ---
+        function openLightbox(src) {
+            const lb = document.getElementById('lightbox');
+            const con = document.getElementById('lightbox-container');
+            lb.style.display = 'flex';
+            if(src.includes('.mp4')) con.innerHTML = `<video src="${src}" controls autoplay class="lightbox-content"></video>`;
+            else con.innerHTML = `<img src="${src}" class="lightbox-content">`;
+        }
+        function closeLightbox() {
+            document.getElementById('lightbox').style.display = 'none';
+            document.getElementById('lightbox-container').innerHTML = ''; // Zastaví video
+        }
+        document.getElementById('lightbox').addEventListener('click', function(e) { if(e.target === this) closeLightbox(); });
+
+        // --- DISCORD API ---
+        async function loadDiscord() {
+            try {
+                const res = await fetch(`https://api.lanyard.rest/v1/users/${config.discordID}`);
+                const json = await res.json();
+                if(!json.success) return;
+                const data = json.data;
+                document.getElementById('dc-username').innerText = data.discord_user.username;
+                const av = document.getElementById('dc-avatar');
+                av.src = data.discord_user.avatar ? `https://cdn.discordapp.com/avatars/${config.discordID}/${data.discord_user.avatar}.png` : "https://cdn.discordapp.com/embed/avatars/0.png";
+                
+                const colors = { online: '#3ba55c', idle: '#faa61a', dnd: '#ed4245', offline: '#747f8d' };
+                document.getElementById('dc-status').style.backgroundColor = colors[data.discord_status] || colors.offline;
+                
+                const actBox = document.getElementById('activity-box');
+                const acts = data.activities.filter(a => a.type !== 4);
+                if(acts.length > 0) {
+                    const a = acts[0];
+                    let icon = "";
+                    if(a.assets && a.assets.large_image) {
+                        icon = a.assets.large_image.startsWith("mp:") ? `https://media.discordapp.net/${a.assets.large_image.replace("mp:", "")}` : `https://cdn.discordapp.com/app-assets/${a.application_id}/${a.assets.large_image}.png`;
+                    } else if(a.id==="spotify:1") icon = a.assets.large_image ? `https://i.scdn.co/image/${a.assets.large_image.replace("spotify:", "")}` : "";
+                    actBox.innerHTML = `<div class="dc-activity"><img src="${icon}" class="act-img" onerror="this.style.display='none'"><div class="act-info"><h4>${a.name}</h4><p>${a.details || a.state || "Playing..."}</p></div></div>`;
+                } else actBox.innerHTML = `<div class="dc-activity"><div class="act-info"><h4>Just Chilling</h4><p>No game detected</p></div></div>`;
+            } catch(e){}
+        }
+        loadDiscord(); setInterval(loadDiscord, 10000);
+    </script>
+</body>
+</html>
