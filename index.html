@@ -1,438 +1,533 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="cs">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RE:ZEN | Roblox Animator</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <title>Advanced Bot Dashboard</title>
     <style>
-        /* --- BAREVNÉ SCHÉMA --- */
+        /* --- ZÁKLADNÍ NASTAVENÍ A PROMĚNNÉ --- */
         :root {
-            --bg: #050505;
-            --card-bg: #111111;
-            --sidebar-bg: #0f0f0f;
-            --discord-bg: #232428;
-            --accent-green: #00b06f; 
-            --text-muted: #b9bbbe;
+            --bg-primary: #313338; /* Discord Dark */
+            --bg-secondary: #2b2d31;
+            --bg-tertiary: #1e1f22;
+            --accent-green: #23a559; /* Discord Green */
+            --text-primary: #f2f3f5;
+            --text-secondary: #b5bac1;
+            --font-main: 'gg sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --lightning-color: rgba(35, 165, 89, 0.6);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background-color: var(--bg);
-            color: white;
-            font-family: 'Inter', sans-serif;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background-image: radial-gradient(circle at 50% 0%, #1a2b20 0%, #000 70%);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: var(--font-main);
             overflow-x: hidden;
         }
 
-        .main-container { width: 100%; max-width: 700px; padding: 40px 20px; text-align: center; transition: 0.3s; }
+        /* --- POZADÍ A EFEKTY (BLESKY) --- */
+        /* Sticky Header Background Effect */
+        .lightning-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 120px;
+            background: linear-gradient(180deg, var(--lightning-color) 0%, transparent 100%);
+            z-index: 10;
+            pointer-events: none; /* Aby šlo klikat skrz */
+            filter: blur(20px);
+            opacity: 0.5;
+            animation: pulse-lightning 4s infinite;
+        }
 
-        /* --- MENU --- */
-        .menu-btn {
-            position: fixed; top: 20px; right: 20px; z-index: 2000;
-            width: 50px; height: 50px; background: rgba(0,0,0,0.6);
-            border: 1px solid #333; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; font-size: 1.5rem; transition: 0.3s; color: white;
+        @keyframes pulse-lightning {
+            0% { opacity: 0.3; }
+            50% { opacity: 0.6; filter: blur(25px); }
+            100% { opacity: 0.3; }
         }
-        .menu-btn:hover { background: var(--accent-green); border-color: var(--accent-green); }
 
-        /* --- SIDEBAR --- */
-        .sidebar {
-            position: fixed; top: 0; right: 0; width: 300px; height: 100%;
-            background: var(--sidebar-bg); border-left: 1px solid #222;
-            z-index: 1999; transform: translateX(100%); transition: transform 0.4s ease;
-            padding: 90px 30px 30px 30px; box-shadow: -10px 0 30px rgba(0,0,0,0.8);
-            display: flex; flex-direction: column; gap: 30px; text-align: left;
+        /* --- NAVIGACE --- */
+        nav {
+            position: sticky;
+            top: 0;
+            background-color: rgba(30, 31, 34, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 100;
+            border-bottom: 2px solid var(--accent-green);
         }
-        .sidebar.active { transform: translateX(0); }
-        
-        .sb-section h3 { color: var(--accent-green); font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; margin-bottom: 15px; border-bottom: 1px solid #222; padding-bottom: 5px; }
-        .sb-text { color: #ccc; font-size: 0.9rem; line-height: 1.6; }
-        
-        .contact-btn {
-            display: flex; align-items: center; gap: 10px;
-            background: #1a1a1a; padding: 12px; border-radius: 6px;
-            color: white; text-decoration: none; margin-bottom: 10px;
-            border: 1px solid #333; transition: 0.2s; font-size: 0.9rem; font-weight: 600; cursor: pointer;
-        }
-        .contact-btn:hover { border-color: var(--accent-green); background: #222; }
-        .btn-paypal { background: #003087; border-color: #003087; }
-        .btn-paypal:hover { background: #0045c2; }
-        .btn-collab { border-color: var(--accent-green); color: var(--accent-green); }
-        .btn-collab:hover { background: rgba(0, 176, 111, 0.1); }
 
-        /* --- HEADER --- */
-        @keyframes greenPulse {
-            0% { text-shadow: 0 0 5px #fff, 0 0 10px var(--accent-green); }
-            100% { text-shadow: 0 0 5px #fff, 0 0 15px var(--accent-green); }
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
-        .title-area { margin-bottom: 40px; }
-        h1 { font-size: 3rem; font-weight: 900; letter-spacing: -2px; color: white; animation: greenPulse 3s infinite alternate ease-in-out; }
-        .subtitle { color: var(--accent-green); font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; font-weight: bold; margin-top: 10px; }
 
-        /* --- DISCORD CARD (Fixed Layout) --- */
-        .discord-card {
-            background-color: var(--discord-bg); border-radius: 12px; width: 100%; max-width: 480px; margin: 0 auto 50px auto;
-            text-align: left; border: 1px solid #333; overflow: hidden; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        .logo-img {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--accent-green);
+            box-shadow: 0 0 10px var(--accent-green);
         }
-        .dc-banner { height: 120px; background-color: #111; background-size: cover; background-position: center; }
-        
-        .dc-header { 
-            padding: 0 20px; position: relative; margin-bottom: 10px; 
-            display: flex; justify-content: space-between; align-items: flex-end;
-            margin-top: -50px; /* Posun obsahu nahoru do banneru */
-        }
-        
-        .dc-avatar-wrapper { 
-            width: 90px; height: 90px; border-radius: 50%; 
-            background: var(--discord-bg); padding: 6px; 
-            position: relative; z-index: 2;
-        }
-        .dc-avatar { width: 100%; height: 100%; border-radius: 50%; background-size: cover; }
-        .dc-status-indicator { width: 20px; height: 20px; border-radius: 50%; background: gray; position: absolute; bottom: 5px; right: 5px; border: 4px solid var(--discord-bg); }
 
-        /* DISCORD BADGES CONTAINER (Vedle avatara / vpravo) */
-        .dc-profile-badges {
-            background: rgba(0,0,0,0.6);
+        .nav-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px; /* ZVĚTŠENÁ MEZERA MEZI POLOŽKAMI */
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            padding: 5px 10px; /* Přidán padding pro lepší klikatelnost */
+        }
+
+        .nav-links a:hover {
+            color: #fff;
+        }
+
+        /* --- DISCORD STATUS SEKCE --- */
+        .profile-container {
+            max-width: 800px;
+            margin: 100px auto 50px;
+            padding: 20px;
+            background: var(--bg-tertiary);
             border-radius: 8px;
-            padding: 5px;
-            display: flex; gap: 5px;
-            backdrop-filter: blur(5px);
-            margin-bottom: 10px; /* Aby nebyly nalepené dole */
-            border: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
-        .badge-icon { font-size: 1.1rem; padding: 2px 5px; }
-        .badge-nitro { color: #f47fff; }
-        .badge-hype { color: #f1c40f; } 
-        .badge-boost { color: #ff73fa; }
-        
-        /* INFO SEKCE */
-        .dc-info { background-color: #111214; margin: 15px; padding: 15px; border-radius: 8px; }
-        
-        .dc-username { font-size: 1.4rem; font-weight: 700; color: white; display: block; }
-        .dc-timezone { font-size: 0.8rem; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; display: flex; align-items: center; gap: 6px; margin: 5px 0 10px 0;}
-        .dc-timezone i { font-size: 0.7rem; }
 
-        /* ROLE (Roblox Dev, Animator) - ZPĚT DOLE */
-        .dc-roles { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 10px; }
-        .dc-role { 
-            background: #2f3136; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; 
-            color: #ccc; display: flex; align-items: center; gap: 5px; font-weight: 600;
+        .avatar-wrapper {
+            position: relative;
         }
-        .role-roblox { background: rgba(0, 176, 111, 0.15); color: var(--accent-green); border: 1px solid rgba(0, 176, 111, 0.5); }
 
-        .dc-body { padding: 0 15px 20px 15px; }
-        .section-header { font-size: 0.75rem; font-weight: 700; color: var(--text-muted); margin-bottom: 8px; margin-top: 15px; text-transform: uppercase; }
-        .dc-text { font-size: 0.9rem; color: #dcddde; line-height: 1.4; white-space: pre-wrap; }
-        
-        .dc-activity { background: #18191c; padding: 10px; border-radius: 5px; display: flex; align-items: center; gap: 10px; margin-top: 10px; }
-        .act-img { width: 50px; height: 50px; border-radius: 8px; background: #333; object-fit: cover; }
-        .act-info h4 { font-size: 0.85rem; font-weight: 700; color: white; }
-        .act-info p { font-size: 0.75rem; color: var(--text-muted); }
-        .dc-btn { display: block; background-color: var(--accent-green); color: white; text-align: center; padding: 10px; border-radius: 4px; text-decoration: none; font-weight: 600; margin: 15px; transition: 0.2s; }
+        .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: #5865F2; /* Placeholder barva */
+            background-image: url('image_5778ed.png'); /* Tvoje logo jako avatar */
+            background-size: cover;
+        }
 
-        /* --- GRID --- */
-        .area-title { text-align: left; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 10px; color: var(--accent-green); text-transform: uppercase; margin-top: 40px; font-weight: 800; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
-        .card { background: #0a0a0a; border: 1px solid #222; border-radius: 8px; overflow: hidden; transition: 0.3s; cursor: pointer; position: relative; }
-        .card:hover { border-color: var(--accent-green); transform: translateY(-3px); }
-        .card::after { content: '\f00e'; font-family: "Font Awesome 6 Free"; font-weight: 900; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 2rem; color: white; opacity: 0; transition: 0.3s; pointer-events: none; text-shadow: 0 0 10px black; }
-        .card:hover::after { opacity: 1; }
-        .card:hover .thumb-video, .card:hover .thumb { filter: brightness(0.4); }
-        .thumb, .thumb-video { width: 100%; height: 160px; object-fit: cover; display: block; background: #151515; background-size: cover; background-position: center; transition: 0.3s; }
-        .info { padding: 15px; text-align: left; }
-        .info h3 { font-size: 1rem; margin-bottom: 5px; }
-        .info p { font-size: 0.8rem; color: #888; }
+        .status-indicator {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 24px;
+            height: 24px;
+            background-color: var(--accent-green);
+            border: 4px solid var(--bg-tertiary);
+            border-radius: 50%;
+        }
 
-        /* --- BLOG --- */
-        #blog-section { margin-top: 60px; }
-        .blog-post { background: var(--card-bg); border: 1px solid #222; border-radius: 8px; padding: 20px; margin-bottom: 30px; text-align: left; }
-        .blog-date { color: var(--accent-green); font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; margin-bottom: 5px; display: block; }
-        .blog-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 15px; color: white; }
-        .blog-text { color: #ccc; line-height: 1.6; font-size: 0.95rem; white-space: pre-wrap; margin-bottom: 15px; }
-        .blog-media { width: 100%; border-radius: 8px; margin-top: 10px; border: 1px solid #333; max-height: 400px; object-fit: cover; }
+        .user-info h1 {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
 
-        /* --- LIGHTBOX & FORM --- */
-        .lightbox { display: none; position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9); align-items: center; justify-content: center; backdrop-filter: blur(5px); }
-        .lightbox-content { max-width: 90%; max-height: 90%; border-radius: 8px; box-shadow: 0 0 20px rgba(0, 176, 111, 0.5); border: 2px solid #222; }
-        .lightbox-close { position: absolute; top: 20px; right: 30px; color: #f1f1f1; font-size: 40px; font-weight: bold; cursor: pointer; }
+        .activity-text {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
 
-        .form-container { background: #111; padding: 30px; border-radius: 10px; width: 100%; max-width: 400px; border: 1px solid #333; box-shadow: 0 0 20px rgba(0, 176, 111, 0.3); text-align: left; }
-        .form-group { margin-bottom: 15px; }
-        .form-label { display: block; margin-bottom: 5px; font-size: 0.8rem; color: #aaa; }
-        .form-input { width: 100%; padding: 10px; background: #222; border: 1px solid #333; color: white; border-radius: 5px; font-family: 'Inter', sans-serif; }
-        .form-input:focus { outline: none; border-color: var(--accent-green); }
-        .form-btn { width: 100%; padding: 10px; background: var(--accent-green); border: none; color: white; font-weight: bold; border-radius: 5px; cursor: pointer; margin-top: 10px; }
-        .form-btn:hover { background: #008a57; }
+        .activity-bold {
+            font-weight: bold;
+            color: var(--text-primary);
+        }
 
-        footer { margin-top: auto; padding: 40px; color: #444; font-size: 0.8rem; }
+        /* --- SLIDERY (VIDEA A OBRÁZKY) --- */
+        .slider-section {
+            max-width: 1000px;
+            margin: 0 auto 50px;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            margin-bottom: 20px;
+            border-left: 5px solid var(--accent-green);
+            padding-left: 15px;
+            font-size: 1.5rem;
+        }
+
+        .slider-container {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            border-radius: 10px;
+            background: var(--bg-secondary);
+            height: 300px; /* Fixní výška slideru */
+        }
+
+        .slider-track {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            height: 100%;
+        }
+
+        .slide {
+            min-width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #000;
+        }
+
+        .slide img, .slide video {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .slider-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.5);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 20px;
+            z-index: 5;
+        }
+
+        .prev-btn { left: 10px; }
+        .next-btn { right: 10px; }
+
+        /* --- TIMELINE (PRAGUE TIMEZONE) --- */
+        .timeline-section {
+            max-width: 800px;
+            margin: 0 auto 50px;
+            padding: 0 20px;
+        }
+
+        .timeline-item {
+            border-left: 2px solid var(--accent-green);
+            padding-left: 20px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -6px;
+            top: 0;
+            width: 10px;
+            height: 10px;
+            background: var(--accent-green);
+            border-radius: 50%;
+        }
+
+        .time-tag {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            background: var(--bg-secondary);
+            padding: 2px 8px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-bottom: 5px;
+        }
+
+        /* --- KONTAKTNÍ FORMULÁŘ --- */
+        .contact-btn {
+            display: block;
+            margin: 0 auto 50px;
+            padding: 15px 40px;
+            background-color: var(--accent-green);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        .contact-btn:hover {
+            background-color: #1e8f4b;
+            transform: scale(1.05);
+        }
+
+        /* Modal Overlay */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        /* Modal Content + Animace otevření */
+        .modal-content {
+            background: var(--bg-secondary);
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+            transform: scale(0.8);
+            opacity: 0;
+            animation: modalOpen 0.3s forwards;
+            border: 1px solid var(--accent-green);
+        }
+
+        @keyframes modalOpen {
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-secondary);
+        }
+
+        form { display: flex; flex-direction: column; gap: 15px; }
+
+        input, textarea {
+            background: var(--bg-tertiary);
+            border: 1px solid #444;
+            padding: 10px;
+            color: white;
+            border-radius: 4px;
+            font-family: var(--font-main);
+        }
+
+        input:focus, textarea:focus {
+            outline: 2px solid var(--accent-green);
+        }
+
+        /* --- ANIMACE ODESLÁNÍ (FAJFKA) --- */
+        .success-animation {
+            display: none; /* Skryto defaultně */
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 200px;
+        }
+
+        .checkmark-circle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--accent-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: popIn 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+
+        .checkmark-icon {
+            color: white;
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0); }
+            100% { transform: scale(1); }
+        }
+
+        .success-text {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            color: var(--accent-green);
+        }
+
     </style>
 </head>
 <body>
 
-    <div class="menu-btn" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
+    <audio id="successSound" src="https://assets.mixkit.co/sfx/preview/mixkit-software-interface-start-2574.mp3"></audio>
 
-    <div class="sidebar" id="sidebar">
-        <div class="sb-section">
-            <h3>COLLABORATION</h3>
-            <p class="sb-text">Do you have an idea? Let's work together!</p>
-            <div class="contact-btn btn-collab" onclick="openForm()"><i class="fas fa-handshake"></i> Request Collab</div>
-        </div>
-        <div class="sb-section">
-            <h3>SUPPORT</h3>
-            <p class="sb-text">Do you like my work? Support is appreciated!</p>
-            <a href="#" target="_blank" class="contact-btn btn-paypal" id="link-paypal"><i class="fab fa-paypal"></i> Donate via PayPal</a>
-        </div>
-        <div class="sb-section">
-            <h3>ABOUT ME</h3>
-            <p class="sb-text" id="sb-about-text">Loading...</p>
-        </div>
-    </div>
+    <div class="lightning-header"></div>
 
-    <div id="lightbox" class="lightbox">
-        <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
-        <div id="lightbox-container" style="display: flex; justify-content: center; width: 100%;"></div>
-    </div>
+    <nav>
+        <div class="nav-left">
+            <img src="image_5778ed.png" alt="Bot Logo" class="logo-img">
+            <span class="nav-title">My Bot Dashboard</span>
+        </div>
+        <div class="nav-links">
+            <a href="#">Domů</a>
+            <a href="#">Funkce</a>
+            <a href="#">Timeline</a>
+            <a href="#">Kontakt</a>
+        </div>
+    </nav>
 
-    <div id="form-modal" class="lightbox">
-        <span class="lightbox-close" onclick="closeForm()">&times;</span>
-        <div class="form-container">
-            <h2 style="color:white; margin-bottom: 20px; border-bottom: 1px solid #333; padding-bottom: 10px;">Collaboration Request</h2>
-            <div class="form-group"><label class="form-label">Your Discord Name</label><input type="text" id="fname" class="form-input" placeholder="User#1234"></div>
-            <div class="form-group"><label class="form-label">Project Type</label><select id="ftype" class="form-input"><option>Roblox Animation</option><option>Game Development</option><option>Other</option></select></div>
-            <div class="form-group"><label class="form-label">Message / Idea</label><textarea id="fmsg" class="form-input" rows="4" placeholder="Describe your idea..."></textarea></div>
-            <button class="form-btn" onclick="sendToDiscord()">SEND REQUEST</button>
-            <p id="form-status" style="margin-top:10px; font-size:0.8rem; color:#aaa;"></p>
+    <div class="profile-container">
+        <div class="avatar-wrapper">
+            <div class="avatar"></div>
+            <div class="status-indicator"></div>
+        </div>
+        <div class="user-info">
+            <h1>Můj Super Bot #1234</h1>
+            <div class="activity-text">
+                Hraje hru <span class="activity-bold">Visual Studio Code</span>
+            </div>
         </div>
     </div>
 
-    <div class="main-container">
-        <div class="title-area">
-            <h1 id="page-title">RE:ZEN</h1>
-            <p class="subtitle" id="page-role">BEGINNER ROBLOX ANIMATOR</p>
+    <section class="slider-section">
+        <h2 class="section-title">Galerie Projektů</h2>
+        <div class="slider-container" id="imgSlider">
+            <button class="slider-btn prev-btn" onclick="moveSlider('imgSlider', -1)">&#10094;</button>
+            <div class="slider-track">
+                <div class="slide"><img src="https://via.placeholder.com/800x400/1e1f22/23a559?text=Projekt+1" alt="1"></div>
+                <div class="slide"><img src="https://via.placeholder.com/800x400/1e1f22/23a559?text=Projekt+2" alt="2"></div>
+                <div class="slide"><img src="https://via.placeholder.com/800x400/1e1f22/23a559?text=Projekt+3" alt="3"></div>
+            </div>
+            <button class="slider-btn next-btn" onclick="moveSlider('imgSlider', 1)">&#10095;</button>
         </div>
+    </section>
 
-        <div class="discord-card">
-            <div class="dc-banner" id="dc-banner"></div>
-            <div class="dc-header">
-                <div class="dc-avatar-wrapper">
-                    <img src="" class="dc-avatar" id="dc-avatar">
-                    <div class="dc-status-indicator" id="dc-status"></div>
+    <section class="slider-section">
+        <h2 class="section-title">Video Ukázky</h2>
+        <div class="slider-container" id="vidSlider">
+            <button class="slider-btn prev-btn" onclick="moveSlider('vidSlider', -1)">&#10094;</button>
+            <div class="slider-track">
+                <div class="slide">
+                    <div style="color:white">Video 1 (Placeholder)</div>
                 </div>
-                
-                <div class="dc-profile-badges">
-                    <span class="badge-icon badge-nitro" title="Nitro"><i class="fas fa-bolt"></i></span>
-                    <span class="badge-icon badge-boost" title="Server Booster"><i class="fas fa-gem"></i></span>
-                    <span class="badge-icon badge-hype" title="HypeSquad"><i class="fas fa-shield-alt"></i></span>
+                <div class="slide">
+                     <div style="color:white">Video 2 (Placeholder)</div>
                 </div>
             </div>
+            <button class="slider-btn next-btn" onclick="moveSlider('vidSlider', 1)">&#10095;</button>
+        </div>
+    </section>
+
+    <section class="timeline-section">
+        <h2 class="section-title">Vývojová Timeline</h2>
+        
+        <div class="timeline-item">
+            <span class="time-tag">22.01.2025 14:00 (Europe/Prague)</span>
+            <h3>Update v2.0</h3>
+            <p>Přidána podpora pro slidery a vylepšené UI.</p>
+        </div>
+
+        <div class="timeline-item">
+            <span class="time-tag">20.01.2025 09:30 (Europe/Prague)</span>
+            <h3>Změna Designu</h3>
+            <p>Implementace zeleného tématu a Discord statusu.</p>
+        </div>
+    </section>
+
+    <button class="contact-btn" onclick="openModal()">Kontaktovat Vývojáře</button>
+
+    <div class="modal" id="contactModal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
             
-            <div class="dc-info">
-                <span class="dc-username" id="dc-username">Loading...</span>
-                
-                <div class="dc-timezone" id="local-time">
-                    <i class="far fa-clock"></i> Loading time...
-                </div>
+            <form id="myForm" onsubmit="submitForm(event)">
+                <h2 style="margin-bottom: 10px;">Napiš mi</h2>
+                <input type="text" placeholder="Tvé jméno / Discord Tag" required>
+                <input type="email" placeholder="Tvůj Email" required>
+                <textarea rows="5" placeholder="Zpráva..." required></textarea>
+                <button type="submit" class="contact-btn" style="width:100%; margin:0;">Odeslat</button>
+            </form>
 
-                <div class="dc-roles">
-                    <span class="dc-role role-roblox"><i class="fas fa-cube"></i> Roblox Dev</span>
-                    <span class="dc-role"><i class="fas fa-video"></i> Animator</span>
+            <div class="success-animation" id="successAnim">
+                <div class="checkmark-circle">
+                    <div class="checkmark-icon">✔</div>
                 </div>
+                <div class="success-text">Odesláno!</div>
             </div>
 
-            <div class="dc-body">
-                <div class="section-header">ABOUT ME</div>
-                <div class="dc-text" id="dc-bio">...</div>
-                <div class="section-header">ACTIVITY</div>
-                <div id="activity-box"></div>
-            </div>
-            <a href="#" class="dc-btn" id="dc-btn-link" target="_blank">Add on Discord</a>
-        </div>
-
-        <div class="portfolio-area">
-            <h2 class="area-title">Videos (Click to Expand)</h2>
-            <div class="grid" id="video-grid"></div>
-        </div>
-
-        <div class="portfolio-area">
-            <h2 class="area-title">Images / Renders</h2>
-            <div class="grid" id="image-grid"></div>
-        </div>
-
-        <div id="blog-section">
-            <h2 class="area-title">Dev Blog & Updates</h2>
-            <div id="blog-container"></div>
         </div>
     </div>
-
-    <footer><p>© 2026 RE:ZEN | All rights reserved</p></footer>
 
     <script>
-        const config = {
-            discordID: '868393762555043870',
-            webhookUrl: "https://discord.com/api/webhooks/1463690525092741333/Wac3lIXI5yYdtSo6w8QgXbWnahVisKr6xIUTh3p7DXLRZxSC2Vin8ZTgXOEDVG6M96eM", 
-
-            pageTitle: "RE:ZEN",
-            role: "< BEGINNER ROBLOX ANIMATOR >",
-            bio: "Hi! I'm new to Roblox animation.\nLearning Moon Animator & Blender.\nDocumenting my progress.",
-
-            discordLink: "https://discord.com/users/868393762555043870", 
-            paypalLink: "https://paypal.me/rachty", 
-            aboutSidebar: "I am a passionate beginner animator focusing on Roblox R6/R15 rigs. My goal is to master combat animations and smooth easing styles.",
-
-            bannerColor: "#00b06f",
-
-            videos: [
-                {
-                    title: "First Walk Cycle",
-                    desc: "Learning R6 movement.",
-                    media: "https://cdn.discordapp.com/attachments/1335237648054358148/1462533466443747408/Walking_E__Blender_Models_Walking.blend_-_Blender_5.0.1_2026-01-18_20-38-16.mp4?ex=69727e6e&is=69712cee&hm=b431d8a39413b25c8542e3849df0a6721dd92be5033ecd12c6c9b44ca83b4f5c&" 
-                },
-                {
-                    title: "Crouch & Collect",
-                    desc: "Blender easing test.",
-                    media: "https://cdn.discordapp.com/attachments/1335237648054358148/1463654389771141322/Desktop_2026.01.21_-_22.57.32.01.mp4?ex=69729ddf&is=69714c5f&hm=2e0abfb5806315a5a0e94ce66508f6a173dafa4a3103e664d933e527cd884bae&"
-                },
-                {
-                    title: "Jump Animation",
-                    desc: "New mechanics learned.",
-                    media: "https://cdn.discordapp.com/attachments/1335237648054358148/1463267744647610483/Jump_Collect_E__Blender_Models_Animations_Jump_Collect.blend_-_Blender_5.0.1_2026-01-20_21-22-58.mp4?ex=69728748&is=697135c8&hm=876687e0481ad6501b6f1abc49432c2451ecb4a1e5ae4be06e77a5df977bcfe4&"
-                }
-            ],
-            images: [
-                {
-                    title: "Render Test",
-                    desc: "Lighting experiment in Blender.",
-                    media: "https://placehold.co/600x400/0a0a0a/00b06f?text=TO+BE+ADDED..."
-                },
-                {
-                    title: "Character Model",
-                    desc: "My main avatar rig.",
-                    media: "https://placehold.co/600x400/0a0a0a/00b06f?text=TO+BE+ADDED..."
-                },
-                {
-                    title: "More Coming Soon",
-                    desc: "I am currently working on new renders.",
-                    media: "https://placehold.co/600x400/0a0a0a/00b06f?text=TO+BE+ADDED..."
-                }
-            ],
-            blogPosts: [
-                {
-                    date: "Jan 22, 2026",
-                    title: "Portfolio Launched!",
-                    text: "I just started my portfolio website. I will be posting updates about my learning journey in Roblox animation here.",
-                    media: null
-                }
-            ]
+        // --- LOGIKA SLIDERŮ ---
+        const sliders = {
+            'imgSlider': { index: 0, track: document.querySelector('#imgSlider .slider-track') },
+            'vidSlider': { index: 0, track: document.querySelector('#vidSlider .slider-track') }
         };
 
-        // --- SYSTEM LOGIC ---
-        document.getElementById('page-title').innerText = config.pageTitle;
-        document.getElementById('page-role').innerText = config.role;
-        document.getElementById('dc-bio').innerText = config.bio;
-        document.getElementById('dc-btn-link').href = config.discordLink;
-        document.getElementById('link-paypal').href = config.paypalLink;
-        document.getElementById('sb-about-text').innerText = config.aboutSidebar;
-
-        const bannerEl = document.getElementById('dc-banner');
-        if(config.bannerImage) { bannerEl.style.backgroundImage = `url('${config.bannerImage}')`; } else { bannerEl.style.backgroundColor = config.bannerColor; }
-
-        function updateTime() {
-            const now = new Date();
-            const timeString = now.toLocaleTimeString('en-GB', { timeZone: 'Europe/Prague', hour: '2-digit', minute: '2-digit' });
-            document.getElementById('local-time').innerHTML = `<i class="far fa-clock"></i> ${timeString} (Local Time)`;
-        }
-        setInterval(updateTime, 1000); updateTime();
-
-        function toggleMenu() {
-            const sb = document.getElementById('sidebar');
-            const icon = document.querySelector('.menu-btn i');
-            sb.classList.toggle('active');
-            if(sb.classList.contains('active')) { icon.classList.remove('fa-bars'); icon.classList.add('fa-times'); } 
-            else { icon.classList.remove('fa-times'); icon.classList.add('fa-bars'); }
-        }
-        document.addEventListener('click', function(event) {
-            const sb = document.getElementById('sidebar');
-            const btn = document.querySelector('.menu-btn');
-            if (!sb.contains(event.target) && !btn.contains(event.target) && sb.classList.contains('active')) { toggleMenu(); }
-        });
-
-        function openForm() { document.getElementById('form-modal').style.display = 'flex'; toggleMenu(); }
-        function closeForm() { document.getElementById('form-modal').style.display = 'none'; }
-        function sendToDiscord() {
-            const name = document.getElementById('fname').value;
-            const type = document.getElementById('ftype').value;
-            const msg = document.getElementById('fmsg').value;
-            const status = document.getElementById('form-status');
-            if(!name || !msg) { status.innerText = "Please fill in all fields."; status.style.color = "#ff5555"; return; }
-            status.innerText = "Sending...";
+        function moveSlider(id, direction) {
+            const slider = sliders[id];
+            const slideCount = slider.track.children.length;
             
-            const requestData = {
-                content: `<@${config.discordID}> **New Collab Request!**`, 
-                embeds: [{
-                    title: "📬 New Request from Website", color: 5763717, 
-                    fields: [{ name: "From", value: name, inline: true }, { name: "Type", value: type, inline: true }, { name: "Message", value: msg }],
-                    footer: { text: "RE:ZEN Portfolio" }, timestamp: new Date()
-                }]
-            };
-            if(!config.webhookUrl) { status.innerText = "Error: Webhook URL not configured."; return; }
-            fetch(config.webhookUrl, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(requestData) })
-            .then(res => { if(res.ok) { status.innerText = "Sent successfully!"; status.style.color = "#00b06f"; setTimeout(closeForm, 2000); } else { status.innerText = "Error sending."; } })
-            .catch(err => { status.innerText = "Error: " + err; });
+            slider.index += direction;
+
+            // Zacyklení slideru
+            if (slider.index < 0) slider.index = slideCount - 1;
+            if (slider.index >= slideCount) slider.index = 0;
+
+            const offset = slider.index * -100;
+            slider.track.style.transform = `translateX(${offset}%)`;
         }
 
-        const vidGrid = document.getElementById('video-grid');
-        config.videos.forEach(p => {
-            vidGrid.innerHTML += `<div class="card" onclick="openLightbox('${p.media}')"><video src="${p.media}" autoplay loop muted playsinline class="thumb-video"></video><div class="info"><h3>${p.title}</h3><p>${p.desc}</p></div></div>`;
-        });
-        const imgGrid = document.getElementById('image-grid');
-        config.images.forEach(p => {
-            imgGrid.innerHTML += `<div class="card" onclick="openLightbox('${p.media}')"><div class="thumb" style="background-image: url('${p.media}');"></div><div class="info"><h3>${p.title}</h3><p>${p.desc}</p></div></div>`;
-        });
-        const blogContainer = document.getElementById('blog-container');
-        if (config.blogPosts) {
-            config.blogPosts.forEach(post => {
-                let mediaHTML = post.media ? (post.media.includes('.mp4') ? `<video src="${post.media}" controls class="blog-media"></video>` : `<img src="${post.media}" class="blog-media">`) : "";
-                blogContainer.innerHTML += `<div class="blog-post"><span class="blog-date">${post.date}</span><div class="blog-title">${post.title}</div><div class="blog-text">${post.text}</div>${mediaHTML}</div>`;
-            });
-        }
-        function openLightbox(src) {
-            const lb = document.getElementById('lightbox'); const con = document.getElementById('lightbox-container'); lb.style.display = 'flex';
-            if(src.includes('.mp4')) con.innerHTML = `<video src="${src}" controls autoplay class="lightbox-content"></video>`; else con.innerHTML = `<img src="${src}" class="lightbox-content">`;
-        }
-        function closeLightbox() { document.getElementById('lightbox').style.display = 'none'; document.getElementById('lightbox-container').innerHTML = ''; }
-        document.getElementById('lightbox').addEventListener('click', function(e) { if(e.target === this) closeLightbox(); });
+        // --- LOGIKA MODALU A FORMULÁŘE ---
+        const modal = document.getElementById('contactModal');
+        const form = document.getElementById('myForm');
+        const successAnim = document.getElementById('successAnim');
+        const audio = document.getElementById('successSound');
 
-        async function loadDiscord() {
-            try {
-                const res = await fetch(`https://api.lanyard.rest/v1/users/${config.discordID}`);
-                const json = await res.json();
-                if(!json.success) return;
-                const data = json.data;
-                document.getElementById('dc-username').innerText = data.discord_user.username;
-                document.getElementById('dc-avatar').src = data.discord_user.avatar ? `https://cdn.discordapp.com/avatars/${config.discordID}/${data.discord_user.avatar}.png` : "https://cdn.discordapp.com/embed/avatars/0.png";
-                const colors = { online: '#3ba55c', idle: '#faa61a', dnd: '#ed4245', offline: '#747f8d' };
-                document.getElementById('dc-status').style.backgroundColor = colors[data.discord_status] || colors.offline;
-                const actBox = document.getElementById('activity-box');
-                const acts = data.activities.filter(a => a.type !== 4);
-                if(acts.length > 0) {
-                    const a = acts[0];
-                    let icon = a.assets && a.assets.large_image ? (a.assets.large_image.startsWith("mp:") ? `https://media.discordapp.net/${a.assets.large_image.replace("mp:", "")}` : `https://cdn.discordapp.com/app-assets/${a.application_id}/${a.assets.large_image}.png`) : "";
-                    if(a.id==="spotify:1") icon = a.assets.large_image ? `https://i.scdn.co/image/${a.assets.large_image.replace("spotify:", "")}` : "";
-                    actBox.innerHTML = `<div class="dc-activity"><img src="${icon}" class="act-img" onerror="this.style.display='none'"><div class="act-info"><h4>${a.name}</h4><p>${a.details || a.state || "Playing..."}</p></div></div>`;
-                } else actBox.innerHTML = `<div class="dc-activity"><div class="act-info"><h4>Just Chilling</h4><p>No game detected</p></div></div>`;
-            } catch(e){}
+        function openModal() {
+            modal.style.display = 'flex';
+            // Reset stavu při otevření
+            form.style.display = 'flex';
+            successAnim.style.display = 'none';
+            form.reset();
         }
-        loadDiscord(); setInterval(loadDiscord, 10000);
+
+        function closeModal() {
+            modal.style.display = 'none';
+        }
+
+        // Kliknutí mimo okno zavře modal
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+
+        function submitForm(e) {
+            e.preventDefault(); // Zabrání refreshi stránky
+
+            // 1. Skrýt formulář
+            form.style.display = 'none';
+            
+            // 2. Zobrazit animaci
+            successAnim.style.display = 'flex';
+            
+            // 3. Přehrát zvuk
+            audio.volume = 0.5;
+            audio.play().catch(e => console.log("Audio play blocked by browser policy"));
+
+            // 4. Po chvíli zavřít okno (volitelné)
+            setTimeout(() => {
+                closeModal();
+            }, 2500);
+        }
     </script>
+
 </body>
 </html>
